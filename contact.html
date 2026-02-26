@@ -1,0 +1,496 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contact Us | Sellr POS — Let's Scale Together</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=DM+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      *,
+      *::before,
+      *::after {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      :root {
+        --bg: #0f0f14;
+        --bg2: #16161d;
+        --bg3: #1e1e28;
+        --lime: #c8ff00;
+        --clay: #c65d1e;
+        --gray: #b5b5b5;
+        --white: #f0f0f0;
+        --font-head: "Space Grotesk", sans-serif;
+        --font-body: "DM Sans", sans-serif;
+        --font-mono: "JetBrains Mono", monospace;
+        --ease: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      }
+      body {
+        background: var(--bg);
+        color: var(--gray);
+        font-family: var(--font-body);
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        overflow-x: hidden;
+      }
+      canvas#particles {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 0;
+        pointer-events: none;
+        opacity: 0.3;
+      }
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 24px;
+        position: relative;
+        z-index: 2;
+      }
+      .logo {
+        font-family: var(--font-head);
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--white);
+        /* z-index: 101; */
+      }
+      .logo-link {
+        text-decoration: none;
+      }
+      /* NAV */
+      nav {
+        position: fixed;
+        top: 0;
+        width: 100%;
+        z-index: 100;
+        padding: 20px 0;
+        background: rgba(15, 15, 20, 0.85);
+        backdrop-filter: blur(20px);
+        transition: all 0.4s var(--ease);
+      }
+      nav.scrolled {
+        background: rgba(15, 15, 20, 0.85);
+        backdrop-filter: blur(20px);
+        padding: 12px 0;
+        border-bottom: 1px solid rgba(200, 255, 0, 0.08);
+      }
+      nav .container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .nav-links {
+        display: flex;
+        align-items: center;
+        gap: 32px;
+      }
+      .nav-link {
+        color: var(--white);
+        font-family: var(--font-head);
+        font-size: 0.9rem;
+        font-weight: 500;
+        transition: color 0.3s;
+      }
+      .nav-link:hover {
+        color: var(--lime);
+      }
+      .nav-toggle {
+        display: none;
+        background: none;
+        border: none;
+        color: var(--white);
+        font-size: 1.8rem;
+        cursor: pointer;
+        z-index: 101;
+      }
+      /* MOBILE NAV */
+      @media (max-width: 991px) {
+        .nav-toggle {
+          display: block;
+        }
+        .nav-links {
+          position: fixed;
+          top: 0;
+          right: -100%;
+          width: 80%;
+          height: 100vh;
+          background: var(--bg2);
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          gap: 40px;
+          transition: all 0.4s var(--ease);
+          z-index: 100;
+          border-left: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .nav-links.active {
+          right: 0;
+        }
+        .nav-link {
+          font-size: 1.2rem;
+        }
+      }
+
+      .contact-main {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        padding: 80px 0;
+      }
+      .contact-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 80px;
+        align-items: start;
+      }
+      .contact-info h1 {
+        font-family: var(--font-head);
+        font-size: clamp(2.5rem, 5vw, 3.5rem);
+        color: var(--white);
+        margin-bottom: 24px;
+        line-height: 1.1;
+      }
+      .contact-info p {
+        font-size: 1.1rem;
+        line-height: 1.7;
+        margin-bottom: 40px;
+      }
+      .info-item {
+        display: flex;
+        gap: 16px;
+        margin-bottom: 24px;
+      }
+      .info-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: 12px;
+        background: rgba(200, 255, 0, 0.1);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.2rem;
+        color: var(--lime);
+        flex-shrink: 0;
+      }
+      .info-content h3 {
+        font-family: var(--font-head);
+        color: var(--white);
+        font-size: 1rem;
+        margin-bottom: 4px;
+      }
+      .info-content p {
+        margin: 0;
+        font-size: 0.9rem;
+        color: var(--gray);
+      }
+
+      .contact-card {
+        background: var(--bg2);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        border-radius: 24px;
+        padding: 40px;
+        position: relative;
+      }
+      .contact-card::before {
+        content: "";
+        position: absolute;
+        top: -1px;
+        left: 40px;
+        width: 60px;
+        height: 2px;
+        background: var(--lime);
+        box-shadow: 0 0 20px var(--lime);
+      }
+      .form-group {
+        margin-bottom: 20px;
+      }
+      label {
+        display: block;
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 8px;
+        color: rgba(255, 255, 255, 0.4);
+      }
+      input,
+      textarea,
+      select {
+        width: 100%;
+        padding: 14px 18px;
+        border-radius: 12px;
+        background: var(--bg3);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        color: var(--white);
+        font-family: var(--font-body);
+        outline: none;
+        transition: all 0.3s;
+      }
+      input:focus,
+      textarea:focus,
+      select:focus {
+        border-color: var(--lime);
+        box-shadow: 0 0 15px rgba(200, 255, 0, 0.1);
+      }
+      .btn {
+        width: 100%;
+        padding: 16px;
+        border-radius: 12px;
+        font-family: var(--font-head);
+        font-weight: 600;
+        font-size: 1rem;
+        cursor: pointer;
+        border: none;
+        transition: all 0.3s var(--ease);
+        margin-top: 12px;
+        display: inline-block;
+        text-align: center;
+        text-decoration: none;
+      }
+      .btn-primary {
+        background: var(--lime);
+        color: var(--bg);
+      }
+      .btn-primary:hover {
+        box-shadow: 0 0 30px rgba(200, 255, 0, 0.3);
+        transform: scale(1.02);
+      }
+
+      footer {
+        padding: 60px 0 30px;
+        border-top: 1px solid rgba(255, 255, 255, 0.06);
+        background: var(--bg);
+      }
+      .footer-links {
+        display: flex;
+        gap: 24px;
+        justify-content: center;
+        margin-bottom: 12px;
+      }
+      .footer-links a {
+        color: var(--gray);
+        font-size: 0.8rem;
+        transition: color 0.3s;
+        text-decoration: none;
+      }
+      .footer-links a:hover {
+        color: var(--lime);
+      }
+      .footer-bottom {
+        text-align: center;
+        font-size: 0.8rem;
+        color: rgba(255, 255, 255, 0.3);
+      }
+
+      @media (max-width: 768px) {
+        .contact-grid {
+          grid-template-columns: 1fr;
+          gap: 40px;
+        }
+        .contact-info h1 {
+          font-size: 2.5rem;
+        }
+        .nav-links {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="particles"></canvas>
+    <nav id="nav">
+      <div class="container">
+        <a
+          href="/"
+          class="logo flex items-center gap-3 font-family-head font-bold text-2xl text-white no-underline"
+        >
+          <img src="./favicon.svg" alt="SellrPOS Icon" class="w-8 h-8" />
+          <span>Sellr<span class="text-lime">POS</span></span>
+        </a>
+        <button class="nav-toggle" id="navToggle">☰</button>
+        <div class="nav-links" id="navLinks">
+          <a href="/store" class="nav-link">Store</a>
+          <a href="/#pricing" class="nav-link">Pricing</a>
+          <a href="/#features" class="nav-link">Features</a>
+          <a href="/login" class="nav-link">Login</a>
+          <a href="/contact" class="nav-link">Contact Us</a>
+        </div>
+      </div>
+    </nav>
+
+    <main class="contact-main pt-22">
+      <div class="container">
+        <div class="contact-grid">
+          <div class="contact-info">
+            <h1>
+              Let's Scale Your <span style="color: var(--lime)">Business.</span>
+            </h1>
+            <p>
+              Have questions about how Sellr POS can automate your shop's
+              growth? Our team is ready to help you build your empire.
+            </p>
+
+            <div class="info-item">
+              <div class="info-icon">📍</div>
+              <div class="info-content">
+                <h3>Visit Us</h3>
+                <p>Tech Towers, Westlands, Nairobi, Kenya</p>
+              </div>
+            </div>
+
+            <div class="info-item">
+              <div class="info-icon">📧</div>
+              <div class="info-content">
+                <h3>Email Us</h3>
+                <p>growth@sellr.co.ke</p>
+              </div>
+            </div>
+
+            <div class="info-item">
+              <div class="info-icon">💬</div>
+              <div class="info-content">
+                <h3>WhatsApp Support</h3>
+                <p>+254 700 000 000</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="contact-card">
+            <form onsubmit="return false;">
+              <div class="form-group">
+                <label>Full Name</label>
+                <input type="text" placeholder="John Doe" required />
+              </div>
+              <div class="form-group">
+                <label>Business Name</label>
+                <input type="text" placeholder="Doe Retail Store" required />
+              </div>
+              <div class="form-group">
+                <label>Interested Plan</label>
+                <select>
+                  <option>Starter Plan</option>
+                  <option selected>Growth Plan</option>
+                  <option>Empire Plan</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Message</label>
+                <textarea
+                  rows="4"
+                  placeholder="Tell us about your shop..."
+                ></textarea>
+              </div>
+              <button class="btn btn-primary" type="submit">
+                Send Message
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <footer>
+      <div class="container">
+        <div class="footer-links">
+          <a href="/">Features</a>
+          <a href="store">Storefront</a>
+          <a href="/#pricing">Pricing</a>
+          <a href="/privacy">Privacy</a>
+          <a href="/terms">Terms</a>
+        </div>
+        <div class="footer-bottom">
+          <p>© 2026 Sellr POS. Built in Nairobi 🇰🇪</p>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      (function () {
+        const c = document.getElementById("particles"),
+          x = c.getContext("2d");
+        let w,
+          h,
+          pts = [];
+        function resize() {
+          w = c.width = window.innerWidth;
+          h = c.height = window.innerHeight;
+          pts = [];
+          for (let i = 0; i < 50; i++)
+            pts.push({
+              x: Math.random() * w,
+              y: Math.random() * h,
+              vx: (Math.random() - 0.5) * 0.2,
+              vy: (Math.random() - 0.5) * 0.2,
+              r: Math.random() * 1.5 + 0.5,
+            });
+        }
+        resize();
+        window.addEventListener("resize", resize);
+        function draw() {
+          x.clearRect(0, 0, w, h);
+          pts.forEach((p, i) => {
+            p.x += p.vx;
+            p.y += p.vy;
+            if (p.x < 0 || p.x > w) p.vx *= -1;
+            if (p.y < 0 || p.y > h) p.vy *= -1;
+            x.beginPath();
+            x.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+            x.fillStyle = "rgba(200,255,0,0.2)";
+            x.fill();
+            for (let j = i + 1; j < pts.length; j++) {
+              const q = pts[j],
+                dx = p.x - q.x,
+                dy = p.y - q.y,
+                d = Math.sqrt(dx * dx + dy * dy);
+              if (d < 150) {
+                x.beginPath();
+                x.moveTo(p.x, p.y);
+                x.lineTo(q.x, q.y);
+                x.strokeStyle = `rgba(200,255,0,${0.05 * (1 - d / 150)})`;
+                x.stroke();
+              }
+            }
+          });
+          requestAnimationFrame(draw);
+        }
+        draw();
+      })();
+      // Nav Scroll
+      const nav = document.getElementById("nav");
+      window.addEventListener("scroll", () => {
+        nav.classList.toggle("scrolled", window.scrollY > 50);
+      });
+
+      // Mobile Menu Toggle
+      const navToggle = document.getElementById("navToggle");
+      const navLinks = document.getElementById("navLinks");
+
+      navToggle.addEventListener("click", () => {
+        navLinks.classList.toggle("active");
+        navToggle.textContent = navLinks.classList.contains("active")
+          ? "✕"
+          : "☰";
+      });
+
+      // Close menu on link click
+      navLinks.querySelectorAll(".nav-link").forEach((link) => {
+        link.addEventListener("click", () => {
+          navLinks.classList.remove("active");
+          navToggle.textContent = "☰";
+        });
+      });
+    </script>
+  </body>
+</html>

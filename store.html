@@ -1,0 +1,807 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Storefront | Sellr POS — Real-time Commerce</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=DM+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              bg: "#0f0f14",
+              bg2: "#16161d",
+              bg3: "#1e1e28",
+              lime: "#c8ff00",
+              clay: "#c65d1e",
+              gray: "#b5b5b5",
+            },
+            fontFamily: {
+              head: ["Space Grotesk", "sans-serif"],
+              body: ["DM Sans", "sans-serif"],
+              mono: ["JetBrains Mono", "monospace"],
+            }
+          },
+        },
+      };
+    </script>
+    <style type="text/tailwindcss">
+      @layer base {
+        body {
+          @apply bg-bg text-gray font-body overflow-x-hidden
+           /* min-h-screen flex flex-col; */
+        }
+      }
+      :root {
+        --bg: #0f0f14;
+        --bg2: #16161d;
+        --bg3: #1e1e28;
+        --lime: #c8ff00;
+        --clay: #c65d1e;
+        --gray: #b5b5b5;
+        --white: #f0f0f0;
+        --font-head: "Space Grotesk", sans-serif;
+        --font-body: "DM Sans", sans-serif;
+        --font-mono: "JetBrains Mono", monospace;
+        --ease: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      }
+      @layer components {
+        .step-node {
+          @apply w-12 h-12 rounded-full border-2 border-white/10 bg-bg2 flex items-center justify-center text-xl transition-all duration-500 relative z-10;
+        }
+        .step-node.active {
+          @apply border-lime bg-lime/10 text-lime shadow-[0_0_20px_rgba(200,255,0,0.3)];
+        }
+        .step-node.completed {
+          @apply border-lime bg-lime text-bg;
+        }
+        .line-segment {
+          @apply flex-1 h-[2px] bg-white/10 relative overflow-hidden;
+        }
+        .line-segment .progress {
+          @apply absolute inset-0 bg-lime origin-left scale-x-0 transition-transform duration-1000 ease-out;
+        }
+        .feed-item {
+          @apply border-l-2 border-white/5 pl-6 pb-8 last:pb-0 relative;
+        }
+        .feed-item::before {
+          content: "";
+          @apply absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-bg2 border-2 border-white/10;
+        }
+        .feed-item.active::before {
+          @apply border-lime bg-lime shadow-[0_0_10px_rgba(200,255,0,0.5)];
+        }
+        .reveal {
+          @apply opacity-0 translate-y-8 transition-all duration-700 ease-out;
+        }
+        .reveal.active {
+          @apply opacity-100 translate-y-0;
+        }
+        .nav-link {
+          @apply text-white font-head text-sm font-medium transition-colors hover:text-lime;
+        }
+        .btn-atc {
+          @apply w-full py-3 rounded-xl font-head font-semibold text-sm cursor-pointer border border-lime bg-transparent text-lime transition-all hover:bg-lime hover:text-bg;
+        }
+        .filter-title {
+          @apply font-head text-white text-[0.7rem] uppercase tracking-widest mb-4 flex items-center gap-2;
+        }
+        .filter-title::after {
+          content: "";
+          @apply flex-1 h-[1px] bg-white/10;
+        }
+      }
+      canvas#particles {
+        @apply fixed inset-0 z-0 pointer-events-none opacity-30;
+      }
+      /* NAV */
+      nav {
+        position: fixed;
+        top: 0;
+        width: 100%;
+        z-index: 100;
+        padding: 20px 0;
+        background: rgba(15, 15, 20, 0.85);
+        backdrop-filter: blur(20px);
+        transition: all 0.4s var(--ease);
+      }
+      nav.scrolled {
+        background: rgba(15, 15, 20, 0.85);
+        backdrop-filter: blur(20px);
+        padding: 12px 0;
+        border-bottom: 1px solid rgba(200, 255, 0, 0.08);
+      }
+      nav .container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .nav-links {
+        display: flex;
+        align-items: center;
+        gap: 32px;
+      }
+      .nav-link {
+        color: var(--white);
+        font-family: var(--font-head);
+        font-size: 0.9rem;
+        font-weight: 500;
+        transition: color 0.3s;
+      }
+      .nav-link:hover {
+        color: var(--lime);
+      }
+      .logo {
+        font-family: var(--font-head);
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--white);
+        z-index: 101;
+      }
+      .nav-toggle {
+        display: none;
+        background: none;
+        border: none;
+        color: var(--white);
+        font-size: 1.8rem;
+        cursor: pointer;
+        z-index: 101;
+      }
+      /* MOBILE NAV */
+      @media (max-width: 991px) {
+        .nav-toggle {
+          display: block;
+        }
+        .nav-links {
+          position: fixed;
+          top: 0;
+          right: -100%;
+          width: 80%;
+          height: 100vh;
+          background: var(--bg2);
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          gap: 40px;
+          transition: all 0.4s var(--ease);
+          z-index: 100;
+          border-left: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .nav-links.active {
+          right: 0;
+        }
+        .nav-link {
+          font-size: 1.2rem;
+        }
+      }
+      /* FOOTER */
+      footer {
+        padding: 60px 0 30px;
+        border-top: 1px solid rgba(255, 255, 255, 0.06);
+      }
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 16px 32px;
+        border-radius: 60px;
+        font-family: var(--font-head);
+        font-weight: 600;
+        font-size: 0.95rem;
+        cursor: pointer;
+        border: none;
+        transition: all 0.3s var(--ease);
+        position: relative;
+      }
+      .btn-primary {
+        background: var(--lime);
+        color: var(--bg);
+        box-shadow: 0 0 30px rgba(200, 255, 0, 0.2);
+      }
+      .btn-primary:hover {
+        box-shadow: 0 0 50px rgba(200, 255, 0, 0.4);
+        transform: translateY(-2px);
+      }
+      .btn-secondary {
+        background: transparent;
+        color: var(--white);
+        border: 1.5px solid rgba(255, 255, 255, 0.2);
+      }
+      .btn-secondary:hover {
+        border-color: var(--lime);
+        color: var(--lime);
+      }
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 24px;
+        position: relative;
+        z-index: 2;
+      }
+      .footer-brand p {
+        font-size: 0.85rem;
+        line-height: 1.7;
+        max-width: 300px;
+        margin-top: 12px;
+      }
+      .footer-bottom {
+        text-align: center;
+        padding-top: 24px;
+        border-top: 1px solid rgba(255, 255, 255, 0.04);
+        font-size: 0.8rem;
+        color: rgba(255, 255, 255, 0.3);
+      }
+      .footer-links {
+        display: flex;
+        gap: 24px;
+        justify-content: center;
+        margin-bottom: 12px;
+      }
+      .footer-links a {
+        color: var(--gray);
+        font-size: 0.8rem;
+        transition: color 0.3s;
+      }
+      .footer-links a:hover {
+        color: var(--lime);
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="particles"></canvas>
+    <nav id="nav">
+      <div class="container">
+        <a
+          href="/"
+          class="logo flex items-center gap-3 font-family-head font-bold text-2xl text-white no-underline"
+        >
+          <img src="./favicon.svg" alt="SellrPOS Icon" class="w-8 h-8" />
+          <span>Sellr<span class="text-lime">POS</span></span>
+        </a>
+        <button class="nav-toggle" id="navToggle">☰</button>
+        <div class="nav-links" id="navLinks">
+          <a href="#" class="nav-link">Store</a>
+          <a href="/track" class="nav-link">Track Order</a>
+          <a href="/contact" class="nav-link">Contact Us</a>
+          <a href="/cart" class="relative group">
+            <span
+              style="
+                text-decoration: none;
+                color: var(--lime);
+                font-size: 1.2rem;
+              "
+              >🛒</span
+            >
+            <span
+              class="absolute -top-2 -right-2 bg-lime text-bg text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center"
+              >2</span
+            >
+          </a>
+        </div>
+      </div>
+    </nav>
+
+    <main
+      class="max-w-7xl mx-auto px-6 flex-1 pt-22"
+    >
+      <!-- <main class="relative z-10 w-full py-12 lg:py-20 pb-20"> -->
+      <!-- Header -->
+      <div class="text-center mb-16">
+        <h1 class="font-head text-4xl md:text-5xl text-white font-bold mb-4">
+          Retail <span class="text-lime">Storefront</span>
+        </h1>
+        <p class="text-lg opacity-60">Browse our catalog of high-quality products.</p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-12">
+        <!-- Sidebar Filters: Hidden on Mobile -->
+        <aside
+          class="hidden lg:block sticky top-28 h-fit reveal"
+          style="--d: 100ms"
+        >
+          <div class="relative mb-8">
+            <input
+              type="text"
+              placeholder="Search products..."
+              class="w-full py-3 px-4 pr-10 rounded-xl bg-bg2 border border-white/10 text-white focus:border-lime focus:ring-1 focus:ring-lime/20 outline-none transition-all"
+            />
+            <span class="absolute right-4 top-1/2 -translate-y-1/2 opacity-50"
+              >🔍</span
+            >
+          </div>
+
+          <div class="mb-8">
+            <h2 class="filter-title">Categories</h2>
+            <ul class="space-y-1">
+              <li>
+                <a
+                  href="#"
+                  class="flex justify-between items-center px-3 py-2 rounded-lg text-lime bg-lime/5 transition-all"
+                  >All Products
+                  <span class="font-mono text-[0.7rem] opacity-50">128</span></a
+                >
+              </li>
+              <li>
+                <a
+                  href="?category=electronics"
+                  class="flex justify-between items-center px-3 py-2 rounded-lg hover:text-lime hover:bg-lime/5 transition-all"
+                  >Electronics
+                  <span class="font-mono text-[0.7rem] opacity-50">34</span></a
+                >
+              </li>
+              <li>
+                <a
+                  href="?category=fmg"
+                  class="flex justify-between items-center px-3 py-2 rounded-lg hover:text-lime hover:bg-lime/5 transition-all"
+                  >Fast Moving Goods
+                  <span class="font-mono text-[0.7rem] opacity-50">56</span></a
+                >
+              </li>
+              <li>
+                <a
+                  href="?category=healthcare"
+                  class="flex justify-between items-center px-3 py-2 rounded-lg hover:text-lime hover:bg-lime/5 transition-all"
+                  >Healthcare
+                  <span class="font-mono text-[0.7rem] opacity-50">12</span></a
+                >
+              </li>
+              <li>
+                <a
+                  href="?category=hardware"
+                  class="flex justify-between items-center px-3 py-2 rounded-lg hover:text-lime hover:bg-lime/5 transition-all"
+                  >Hardware
+                  <span class="font-mono text-[0.7rem] opacity-50">26</span></a
+                >
+              </li>
+            </ul>
+          </div>
+
+          <div>
+            <h2 class="filter-title">Price Range</h2>
+            <div class="flex gap-3 mb-4">
+              <input
+                type="number"
+                placeholder="Min"
+                class="w-full py-2 px-3 rounded-lg bg-bg2 border border-white/10 text-white text-sm outline-none"
+              />
+              <input
+                type="number"
+                placeholder="Max"
+                class="w-full py-2 px-3 rounded-lg bg-bg2 border border-white/10 text-white text-sm outline-none"
+              />
+            </div>
+            <button class="btn-atc text-xs py-2 active:scale-95">
+              Apply Filter
+            </button>
+          </div>
+        </aside>
+
+        <!-- Product Grid -->
+        <div
+          class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-8 items-stretch"
+        >
+          <!-- Product 1 -->
+          <div
+            class="product-card reveal group bg-bg2 border border-white/5 rounded-3xl p-4 transition-all duration-300 hover:-translate-y-2 hover:border-lime hover:shadow-[0_20px_40px_rgba(0,0,0,0.3)] flex flex-col relative overflow-hidden aspect-[4/5] sm:aspect-square"
+            style="--d: 0ms"
+          >
+            <div
+              class="h-1/2 bg-bg3 rounded-2xl mb-4 flex items-center justify-center text-5xl relative overflow-hidden flex-shrink-0"
+            >
+              🎧<span
+                class="absolute top-3 left-3 font-mono text-[0.6rem] bg-lime text-bg px-2 py-1 rounded font-bold"
+                >NEW</span
+              >
+              <div
+                class="absolute inset-0 bg-gradient-to-br from-transparent to-lime/5"
+              ></div>
+            </div>
+            <div class="flex-1 flex flex-col justify-between">
+              <div>
+                <h3
+                  class="font-head text-white text-lg mb-1 group-hover:text-lime transition-colors line-clamp-2"
+                >
+                  Wireless Headphones
+                </h3>
+                <div
+                  class="font-head text-lime text-xl font-bold flex items-baseline gap-1"
+                >
+                  KES 4,500<span
+                    class="text-[0.65rem] text-gray font-normal uppercase tracking-wider ml-1"
+                    >In Stock</span
+                  >
+                </div>
+              </div>
+              <button class="btn-atc mt-2">Add to Cart</button>
+            </div>
+          </div>
+          <!-- Product 2 -->
+          <div
+            class="product-card reveal group bg-bg2 border border-white/5 rounded-3xl p-4 transition-all duration-300 hover:-translate-y-2 hover:border-lime hover:shadow-[0_20px_40px_rgba(0,0,0,0.3)] flex flex-col relative overflow-hidden aspect-[4/5] sm:aspect-square"
+            style="--d: 100ms"
+          >
+            <div
+              class="h-1/2 bg-bg3 rounded-2xl mb-4 flex items-center justify-center text-5xl relative overflow-hidden flex-shrink-0"
+            >
+              ☕
+              <div
+                class="absolute inset-0 bg-gradient-to-br from-transparent to-lime/5"
+              ></div>
+            </div>
+            <div class="flex-1 flex flex-col justify-between">
+              <div>
+                <h3
+                  class="font-head text-white text-lg mb-1 group-hover:text-lime transition-colors line-clamp-2"
+                >
+                  Dark Roast Coffee Beans
+                </h3>
+                <div
+                  class="font-head text-lime text-xl font-bold flex items-baseline gap-1"
+                >
+                  KES 1,200<span
+                    class="text-[0.65rem] text-gray font-normal uppercase tracking-wider ml-1"
+                    >500g</span
+                  >
+                </div>
+              </div>
+              <button class="btn-atc mt-2">Add to Cart</button>
+            </div>
+          </div>
+          <!-- Product 3 -->
+          <div
+            class="product-card reveal group bg-bg2 border border-white/5 rounded-3xl p-4 transition-all duration-300 hover:-translate-y-2 hover:border-lime hover:shadow-[0_20px_40px_rgba(0,0,0,0.3)] flex flex-col relative overflow-hidden aspect-[4/5] sm:aspect-square"
+            style="--d: 200ms"
+          >
+            <div
+              class="h-1/2 bg-bg3 rounded-2xl mb-4 flex items-center justify-center text-5xl relative overflow-hidden flex-shrink-0"
+            >
+              💊<span
+                class="absolute top-3 left-3 font-mono text-[0.6rem] bg-lime text-bg px-2 py-1 rounded font-bold"
+                >HEALTH</span
+              >
+              <div
+                class="absolute inset-0 bg-gradient-to-br from-transparent to-lime/5"
+              ></div>
+            </div>
+            <div class="flex-1 flex flex-col justify-between">
+              <div>
+                <h3
+                  class="font-head text-white text-lg mb-1 group-hover:text-lime transition-colors line-clamp-2"
+                >
+                  Daily Vitamin Pack
+                </h3>
+                <div
+                  class="font-head text-lime text-xl font-bold flex items-baseline gap-1"
+                >
+                  KES 2,800<span
+                    class="text-[0.65rem] text-gray font-normal uppercase tracking-wider ml-1"
+                    >30 Day</span
+                  >
+                </div>
+              </div>
+              <button class="btn-atc mt-2">Add to Cart</button>
+            </div>
+          </div>
+          <!-- Product 4 -->
+          <div
+            class="product-card reveal group bg-bg2 border border-white/5 rounded-3xl p-4 transition-all duration-300 hover:-translate-y-2 hover:border-lime hover:shadow-[0_20px_40px_rgba(0,0,0,0.3)] flex flex-col relative overflow-hidden aspect-[4/5] sm:aspect-square"
+            style="--d: 300ms"
+          >
+            <div
+              class="h-1/2 bg-bg3 rounded-2xl mb-4 flex items-center justify-center text-5xl relative overflow-hidden flex-shrink-0"
+            >
+              🛠️
+              <div
+                class="absolute inset-0 bg-gradient-to-br from-transparent to-lime/5"
+              ></div>
+            </div>
+            <div class="flex-1 flex flex-col justify-between">
+              <div>
+                <h3
+                  class="font-head text-white text-lg mb-1 group-hover:text-lime transition-colors line-clamp-2"
+                >
+                  Precision Tool Kit
+                </h3>
+                <div
+                  class="font-head text-lime text-xl font-bold flex items-baseline gap-1"
+                >
+                  KES 8,500<span
+                    class="text-[0.65rem] text-gray font-normal uppercase tracking-wider ml-1"
+                    >24 Pcs</span
+                  >
+                </div>
+              </div>
+              <button class="btn-atc mt-2">Add to Cart</button>
+            </div>
+          </div>
+          <!-- Product 5 -->
+          <div
+            class="product-card reveal group bg-bg2 border border-white/5 rounded-3xl p-4 transition-all duration-300 hover:-translate-y-2 hover:border-lime hover:shadow-[0_20px_40px_rgba(0,0,0,0.3)] flex flex-col relative overflow-hidden aspect-[4/5] sm:aspect-square"
+            style="--d: 400ms"
+          >
+            <div
+              class="h-1/2 bg-bg3 rounded-2xl mb-4 flex items-center justify-center text-5xl relative overflow-hidden flex-shrink-0"
+            >
+              📦<span
+                class="absolute top-3 left-3 font-mono text-[0.6rem] bg-lime text-bg px-2 py-1 rounded font-bold"
+                >SALE</span
+              >
+              <div
+                class="absolute inset-0 bg-gradient-to-br from-transparent to-lime/5"
+              ></div>
+            </a>
+          </div>
+            <div class="flex-1 flex flex-col justify-between">
+              <div>
+                <h3
+                  class="font-head text-white text-lg mb-1 group-hover:text-lime transition-colors line-clamp-2"
+                >
+                  Bulk Maize Flour
+                </h3>
+                <div
+                  class="font-head text-lime text-xl font-bold flex items-baseline gap-1"
+                >
+                  KES 180<span
+                    class="text-[0.65rem] text-gray font-normal uppercase tracking-wider ml-1"
+                    >2kg</span
+                  >
+                </div>
+              </div>
+              <button class="btn-atc mt-2">Add to Cart</button>
+            </div>
+        </div>
+          <!-- Product 6 -->
+          <div
+            class="product-card reveal group bg-bg2 border border-white/5 rounded-3xl p-4 transition-all duration-300 hover:-translate-y-2 hover:border-lime hover:shadow-[0_20px_40px_rgba(0,0,0,0.3)] flex flex-col relative overflow-hidden aspect-[4/5] sm:aspect-square"
+            style="--d: 500ms"
+          >
+            <div
+              class="h-1/2 bg-bg3 rounded-2xl mb-4 flex items-center justify-center text-5xl relative overflow-hidden flex-shrink-0"
+            >
+              📱
+              <div
+                class="absolute inset-0 bg-gradient-to-br from-transparent to-lime/5"
+              ></div>
+            </div>
+            <div class="flex-1 flex flex-col justify-between">
+              <div>
+                <h3
+                  class="font-head text-white text-lg mb-1 group-hover:text-lime transition-colors line-clamp-2"
+                >
+                  Smart Tablet Pro
+                </h3>
+                <div
+                  class="font-head text-lime text-xl font-bold flex items-baseline gap-1"
+                >
+                  KES 24,000<span
+                    class="text-[0.65rem] text-gray font-normal uppercase tracking-wider ml-1"
+                    >128GB</span
+                  >
+                </div>
+              </div>
+              <button class="btn-atc mt-2">Add to Cart</button>
+            </div>
+          </div>
+          <!-- More placeholders for big screen beauty -->
+          <div
+            class="product-card reveal group bg-bg2 border border-white/5 rounded-3xl p-4 transition-all duration-300 hover:-translate-y-2 hover:border-lime hover:shadow-[0_20px_40px_rgba(0,0,0,0.3)] flex flex-col relative overflow-hidden hidden xl:flex aspect-[4/5] sm:aspect-square"
+            style="--d: 600ms"
+          >
+            <div
+              class="h-1/2 bg-bg3 rounded-2xl mb-4 flex items-center justify-center text-5xl relative overflow-hidden flex-shrink-0"
+            >
+              ⌚
+            </div>
+            <div class="flex-1 flex flex-col justify-between">
+              <div>
+                <h3
+                  class="font-head text-white text-lg mb-1 group-hover:text-lime transition-colors line-clamp-2"
+                >
+                  Neo Smartwatch
+                </h3>
+                <div
+                  class="font-head text-lime text-xl font-bold flex items-baseline gap-1"
+                >
+                  KES 12,000
+                </div>
+              </div>
+              <button class="btn-atc mt-2">Add to Cart</button>
+            </div>
+          </div>
+          <div
+            class="product-card reveal group bg-bg2 border border-white/5 rounded-3xl p-4 transition-all duration-300 hover:-translate-y-2 hover:border-lime hover:shadow-[0_20px_40px_rgba(0,0,0,0.3)] flex flex-col relative overflow-hidden hidden xl:flex aspect-[4/5] sm:aspect-square"
+            style="--d: 700ms"
+          >
+            <div
+              class="h-1/2 bg-bg3 rounded-2xl mb-4 flex items-center justify-center text-5xl relative overflow-hidden flex-shrink-0"
+            >
+              🔋
+            </div>
+            <div class="flex-1 flex flex-col justify-between">
+              <div>
+                <h3
+                  class="font-head text-white text-lg mb-1 group-hover:text-lime transition-colors line-clamp-2"
+                >
+                  Solar Power Bank
+                </h3>
+                <div
+                  class="font-head text-lime text-xl font-bold flex items-baseline gap-1"
+                >
+                  KES 6,500
+                </div>
+              </div>
+              <button class="btn-atc mt-2">Add to Cart</button>
+            </div>
+          </div>
+          <div
+            class="product-card reveal group bg-bg2 border border-white/5 rounded-3xl p-4 transition-all duration-300 hover:-translate-y-2 hover:border-lime hover:shadow-[0_20px_40px_rgba(0,0,0,0.3)] flex flex-col relative overflow-hidden hidden 2xl:flex aspect-[4/5] sm:aspect-square"
+            style="--d: 800ms"
+          >
+            <div
+              class="h-1/2 bg-bg3 rounded-2xl mb-4 flex items-center justify-center text-5xl relative overflow-hidden flex-shrink-0"
+            >
+              🧴
+            </div>
+            <div class="flex-1 flex flex-col justify-between">
+              <div>
+                <h3
+                  class="font-head text-white text-lg mb-1 group-hover:text-lime transition-colors line-clamp-2"
+                >
+                  Organic Body Wash
+                </h3>
+                <div
+                  class="font-head text-lime text-xl font-bold flex items-baseline gap-1"
+                >
+                  KES 850
+                </div>
+              </div>
+              <button class="btn-atc mt-2">Add to Cart</button>
+            </div>
+          </div>
+          <div
+            class="product-card reveal group bg-bg2 border border-white/5 rounded-3xl p-4 transition-all duration-300 hover:-translate-y-2 hover:border-lime hover:shadow-[0_20px_40px_rgba(0,0,0,0.3)] flex flex-col relative overflow-hidden hidden 2xl:flex aspect-[4/5] sm:aspect-square"
+            style="--d: 900ms"
+          >
+            <div
+              class="h-1/2 bg-bg3 rounded-2xl mb-4 flex items-center justify-center text-5xl relative overflow-hidden flex-shrink-0"
+            >
+              👟
+            </div>
+            <div class="flex-1 flex flex-col justify-between">
+              <div>
+                <h3
+                  class="font-head text-white text-lg mb-1 group-hover:text-lime transition-colors line-clamp-2"
+                >
+                  Urban Runners
+                </h3>
+                <div
+                  class="font-head text-lime text-xl font-bold flex items-baseline gap-1"
+                >
+                  KES 3,200
+                </div>
+              </div>
+              <button class="btn-atc mt-2">Add to Cart</button>
+            </div>
+          </div>
+      </div>
+    </main>
+    
+    <!-- FOOTER -->
+     <footer class="mt-10">
+      <div class="container">
+        <div class="">
+          <div class="footer-brand">
+            <a
+              href="/"
+              class="logo flex items-center gap-3 font-family-head font-bold text-2xl mb-2 text-white"
+            >
+              <img src="./logo.svg" alt="SellrPOS Icon" class="w-40 h-15" />
+            </a>
+            <p>
+              AI-powered, offline-first point of sale built for East African
+              retailers ready to scale.
+            </p>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <div class="footer-links">
+            <a href="/#features">Features</a>
+            <a href="/store">Storefront</a>
+            <a href="/#pricing">Pricing</a>
+            <a href="/contact">Contact</a>
+            <a href="/privacy">Privacy</a>
+            <a href="/terms">Terms</a>
+          </div>
+          <p>© 2026 Sellr POS. Built in Nairobi 🇰🇪</p>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      // Particles Background
+      (function () {
+        const c = document.getElementById("particles"),
+          x = c.getContext("2d");
+        let w,
+          h,
+          pts = [];
+        function resize() {
+          w = c.width = window.innerWidth;
+          h = c.height = window.innerHeight;
+          pts = [];
+          for (let i = 0; i < 40; i++)
+            pts.push({
+              x: Math.random() * w,
+              y: Math.random() * h,
+              vx: (Math.random() - 0.5) * 0.1,
+              vy: (Math.random() - 0.5) * 0.1,
+              r: Math.random() * 1.2 + 0.3,
+            });
+        }
+        resize();
+        window.addEventListener("resize", resize);
+        function draw() {
+          x.clearRect(0, 0, w, h);
+          pts.forEach((p, i) => {
+            p.x += p.vx;
+            p.y += p.vy;
+            if (p.x < 0 || p.x > w) p.vx *= -1;
+            if (p.y < 0 || p.y > h) p.vy *= -1;
+            x.beginPath();
+            x.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+            x.fillStyle = "rgba(200,255,0,0.15)";
+            x.fill();
+          });
+          requestAnimationFrame(draw);
+        }
+        draw();
+      })();
+      // Intersection Observer
+      const obs = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((e) => {
+            if (e.isIntersecting) {
+              const d = parseInt(e.target.style.getPropertyValue("--d")) || 0;
+              setTimeout(() => e.target.classList.add("active"), d);
+              obs.unobserve(e.target);
+            }
+          });
+        },
+        { threshold: 0.1 },
+      );
+      document.querySelectorAll(".reveal").forEach((el) => obs.observe(el));
+      // Nav Scroll
+      const nav = document.getElementById("nav");
+      window.addEventListener("scroll", () => {
+        nav.classList.toggle("scrolled", window.scrollY > 50);
+      });
+
+      // Mobile Menu Toggle
+      const navToggle = document.getElementById("navToggle");
+      const navLinks = document.getElementById("navLinks");
+
+      navToggle.addEventListener("click", () => {
+        navLinks.classList.toggle("active");
+        navToggle.textContent = navLinks.classList.contains("active")
+          ? "✕"
+          : "☰";
+      });
+
+      // Close menu on link click
+      navLinks.querySelectorAll(".nav-link").forEach((link) => {
+        link.addEventListener("click", () => {
+          navLinks.classList.remove("active");
+          navToggle.textContent = "☰";
+        });
+      });
+    </script>
+  </body>
+</html>

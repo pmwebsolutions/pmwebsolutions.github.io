@@ -3,7 +3,4 @@
   <path d="M12 8H22L20 12H10L12 8Z" fill="#c8ff00"/>
   <path d="M8 14H18L16 18H6L8 14Z" fill="#c8ff00" fill-opacity="0.6"/>
   <path d="M14 20H24L22 24H12L14 20Z" fill="#c65d1e"/>
-  <circle cx="26" cy="6" r="2" fill="#c8ff00">
-    <animate attributeName="opacity" values="1;0.3;1" dur="2s" repeatCount="indefinite" />
-  </circle>
 </svg>

@@ -38,30 +38,210 @@
           @apply bg-bg text-gray font-body overflow-x-hidden min-h-screen flex flex-col;
         }
       }
+      :root {
+        --bg: #0f0f14;
+        --bg2: #16161d;
+        --bg3: #1e1e28;
+        --lime: #c8ff00;
+        --clay: #c65d1e;
+        --gray: #b5b5b5;
+        --white: #f0f0f0;
+        --font-head: "Space Grotesk", sans-serif;
+        --font-body: "DM Sans", sans-serif;
+        --font-mono: "JetBrains Mono", monospace;
+        --ease: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      }
+      /* NAV */
+      nav {
+        position: fixed;
+        top: 0;
+        width: 100%;
+        z-index: 100;
+        padding: 20px 0;
+        background: rgba(15, 15, 20, 0.85);
+        backdrop-filter: blur(20px);
+        transition: all 0.4s var(--ease);
+      }
+      nav.scrolled {
+        background: rgba(15, 15, 20, 0.85);
+        backdrop-filter: blur(20px);
+        padding: 12px 0;
+        border-bottom: 1px solid rgba(200, 255, 0, 0.08);
+      }
+      nav .container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .nav-links {
+        display: flex;
+        align-items: center;
+        gap: 32px;
+      }
+      .nav-link {
+        color: var(--white);
+        font-family: var(--font-head);
+        font-size: 0.9rem;
+        font-weight: 500;
+        transition: color 0.3s;
+      }
+      .nav-link:hover {
+        color: var(--lime);
+      }
+      .logo {
+        font-family: var(--font-head);
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--white);
+        z-index: 101;
+      }
+      .nav-toggle {
+        display: none;
+        background: none;
+        border: none;
+        color: var(--white);
+        font-size: 1.8rem;
+        cursor: pointer;
+        z-index: 101;
+      }
+      /* MOBILE NAV */
+      @media (max-width: 991px) {
+        .nav-toggle {
+          display: block;
+        }
+        .nav-links {
+          position: fixed;
+          top: 0;
+          right: -100%;
+          width: 80%;
+          height: 100vh;
+          background: var(--bg2);
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          gap: 40px;
+          transition: all 0.4s var(--ease);
+          z-index: 100;
+          border-left: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .nav-links.active {
+          right: 0;
+        }
+        .nav-link {
+          font-size: 1.2rem;
+        }
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 24px;
+        position: relative;
+        z-index: 2;
+      }
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 16px 32px;
+        border-radius: 60px;
+        font-family: var(--font-head);
+        font-weight: 600;
+        font-size: 0.95rem;
+        cursor: pointer;
+        border: none;
+        transition: all 0.3s var(--ease);
+        position: relative;
+      }
+      .btn-primary {
+        background: var(--lime);
+        color: var(--bg);
+        box-shadow: 0 0 30px rgba(200, 255, 0, 0.2);
+      }
+      .btn-primary:hover {
+        box-shadow: 0 0 50px rgba(200, 255, 0, 0.4);
+        transform: translateY(-2px);
+      }
+      .btn-secondary {
+        background: transparent;
+        color: var(--white);
+        border: 1.5px solid rgba(255, 255, 255, 0.2);
+      }
+      .btn-secondary:hover {
+        border-color: var(--lime);
+        color: var(--lime);
+      }
       canvas#particles {
         @apply fixed inset-0 z-0 pointer-events-none opacity-30;
       }
+      /* FOOTER */
+      footer {
+        padding: 60px 0 30px;
+        border-top: 1px solid rgba(255, 255, 255, 0.06);
+      }
+      .footer-brand p {
+        font-size: 0.85rem;
+        line-height: 1.7;
+        max-width: 300px;
+        margin-top: 12px;
+      }
+      .footer-bottom {
+        text-align: center;
+        padding-top: 24px;
+        border-top: 1px solid rgba(255, 255, 255, 0.04);
+        font-size: 0.8rem;
+        color: rgba(255, 255, 255, 0.3);
+      }
+      .footer-links {
+        display: flex;
+        gap: 20px;
+        justify-content: center;
+        margin-bottom: 12px;
+      }
+      .footer-links a {
+        color: var(--gray);
+        font-size: 0.8rem;
+        transition: color 0.3s;
+      }
+      .footer-links a:hover {
+        color: var(--lime);
+      }
+      /* RESPONSIVE */
+      @media (max-width: 768px) {
+        .footer-grid {
+          grid-template-columns: 1fr;
+        }
+        .newsletter {
+          flex-direction: column;
+        }
+      }
     </style>
   </head>
-  <body class="bg-bg text-gray">
+  <body>
     <canvas id="particles"></canvas>
-
-    <nav
-      class="sticky top-0 z-[100] border-b border-white/5 bg-bg/80 backdrop-blur-xl py-5"
-    >
-      <div class="max-w-7xl mx-auto px-6 flex justify-between items-center">
+    <nav id="nav">
+      <div class="container">
         <a
-          href="index.html"
-          class="font-head text-2xl font-bold text-white no-underline"
-          >Sellr<span class="text-lime">POS</span></a
+          href="/"
+          class="logo flex items-center gap-3 font-family-head font-bold text-2xl text-white no-underline"
         >
-        <div class="flex items-center gap-8">
-          <a href="storefront.html" class="nav-link">Store</a>
-          <a href="login.html" class="nav-link">Login</a>
-          <a href="signup.html" class="nav-link">Sign Up</a>
-          <a href="contact.html" class="nav-link">Contact</a>
-          <a href="cart.html" class="relative group">
-            <span class="text-lime text-xl">🛒</span>
+          <img src="./favicon.svg" alt="SellrPOS Icon" class="w-8 h-8" />
+          <span>Sellr<span class="text-lime">POS</span></span>
+        </a>
+        <button class="nav-toggle" id="navToggle">☰</button>
+        <div class="nav-links" id="navLinks">
+          <a href="/store" class="nav-link">Store</a>
+          <a href="/track" class="nav-link">Track Order</a>
+          <a href="/contact" class="nav-link">Contact Us</a>
+          <a href="/cart" class="relative group">
+            <span
+              style="
+                text-decoration: none;
+                color: var(--lime);
+                font-size: 1.2rem;
+              "
+              >🛒</span
+            >
             <span
               class="absolute -top-2 -right-2 bg-lime text-bg text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center"
               >2</span
@@ -71,7 +251,9 @@
       </div>
     </nav>
 
-    <main class="max-w-5xl mx-auto px-6 py-16 flex-1 relative z-10 w-full">
+    <main
+      class="max-w-5xl mx-auto px-6 py-16 flex-1 relative z-10 w-full pt-22"
+    >
       <h1 class="font-head text-4xl text-white font-bold mb-10">
         Your <span class="text-lime">Cart</span>
       </h1>
@@ -193,7 +375,7 @@
               </div>
             </div>
             <a
-              href="checkout.html"
+              href="/checkout"
               class="block w-full text-center py-4 bg-lime text-bg font-head font-bold rounded-xl hover:shadow-[0_0_30px_rgba(200,255,0,0.3)] hover:-translate-y-0.5 transition-all"
             >
               Checkout Now
@@ -207,15 +389,36 @@
         </div>
       </div>
     </main>
-
-    <footer class="py-10 border-t border-white/5 bg-bg">
-      <div class="max-w-7xl mx-auto px-6 text-center">
-        <p class="text-white/30 text-[10px] uppercase tracking-widest">
-          © 2026 Sellr POS. Built in Nairobi 🇰🇪
-        </p>
+    <!-- FOOTER -->
+    <footer class="mt-10">
+      <div class="container">
+        <div class="">
+          <div class="footer-brand">
+            <a
+              href="/"
+              class="logo flex items-center gap-3 font-family-head font-bold text-2xl mb-2 text-white"
+            >
+              <img src="./logo.svg" alt="SellrPOS Icon" class="w-40 h-15" />
+            </a>
+            <p>
+              AI-powered, offline-first point of sale built for East African
+              retailers ready to scale.
+            </p>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <div class="footer-links">
+            <a href="/#features">Features</a>
+            <a href="/store">Storefront</a>
+            <a href="/#pricing">Pricing</a>
+            <a href="/contact">Contact</a>
+            <a href="/privacy">Privacy</a>
+            <a href="/terms">Terms</a>
+          </div>
+          <p>© 2026 Sellr POS. Built in Nairobi 🇰🇪</p>
+        </div>
       </div>
     </footer>
-
     <script>
       // Particles Background
       (function () {
@@ -255,6 +458,30 @@
         }
         draw();
       })();
+      // Nav Scroll
+      const nav = document.getElementById("nav");
+      window.addEventListener("scroll", () => {
+        nav.classList.toggle("scrolled", window.scrollY > 50);
+      });
+
+      // Mobile Menu Toggle
+      const navToggle = document.getElementById("navToggle");
+      const navLinks = document.getElementById("navLinks");
+
+      navToggle.addEventListener("click", () => {
+        navLinks.classList.toggle("active");
+        navToggle.textContent = navLinks.classList.contains("active")
+          ? "✕"
+          : "☰";
+      });
+
+      // Close menu on link click
+      navLinks.querySelectorAll(".nav-link").forEach((link) => {
+        link.addEventListener("click", () => {
+          navLinks.classList.remove("active");
+          navToggle.textContent = "☰";
+        });
+      });
     </script>
   </body>
 </html>

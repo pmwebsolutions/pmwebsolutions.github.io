@@ -1,0 +1,348 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AI Business Assistants | Sellr POS</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=DM+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              bg: "#0f0f14",
+              bg2: "#16161d",
+              bg3: "#1e1e28",
+              lime: "#c8ff00",
+              clay: "#c65d1e",
+              gray: "#b5b5b5",
+            },
+            fontFamily: {
+              head: ["Space Grotesk", "sans-serif"],
+              body: ["DM Sans", "sans-serif"],
+              mono: ["JetBrains Mono", "monospace"],
+            },
+          },
+        },
+      };
+    </script>
+    <style type="text/tailwindcss">
+      @layer base {
+        body {
+          @apply bg-bg text-gray font-body overflow-x-hidden min-h-screen flex;
+        }
+      }
+      @layer components {
+        .sidebar-link {
+          @apply flex items-center gap-4 px-6 py-4 text-sm font-medium transition-all border-l-4 border-transparent hover:bg-white/5;
+        }
+        .sidebar-link.active {
+          @apply bg-lime/5 border-lime text-white;
+        }
+        .tool-card {
+          @apply bg-bg2 border border-white/5 p-6 rounded-[2rem] transition-all hover:border-lime/30 relative flex flex-col;
+        }
+        .badge {
+          @apply px-2.5 py-1 rounded-lg text-[10px] font-head font-bold uppercase tracking-wider;
+        }
+        .category-pill {
+          @apply px-4 py-2 rounded-xl text-xs font-bold border border-white/5 hover:border-lime/40 transition-all cursor-pointer;
+        }
+        .category-pill.active {
+          @apply bg-lime text-bg border-lime;
+        }
+        .waitlist-modal {
+          @apply fixed inset-0 z-[200] flex items-center justify-center p-6 bg-bg/90 backdrop-blur-xl transition-all duration-300;
+        }
+      }
+      ::-webkit-scrollbar {
+        @apply w-1.5;
+      }
+      ::-webkit-scrollbar-track {
+        @apply bg-bg;
+      }
+      ::-webkit-scrollbar-thumb {
+        @apply bg-white/10 rounded-full hover:bg-white/20;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Waitlist Modal -->
+    <div
+      id="waitlistModal"
+      class="waitlist-modal opacity-0 pointer-events-none"
+    >
+      <div
+        class="bg-bg2 border border-white/10 p-10 rounded-[2.5rem] max-w-md w-full relative shadow-2xl"
+      >
+        <button
+          onclick="closeModal()"
+          class="absolute top-6 right-6 text-2xl opacity-40 hover:opacity-100"
+        >
+          ×
+        </button>
+        <div class="text-center">
+          <div
+            class="w-20 h-20 bg-lime/10 rounded-3xl flex items-center justify-center text-4xl mx-auto mb-6"
+          >
+            🚀
+          </div>
+          <h2 class="font-head text-2xl text-white font-bold mb-2">
+            Joining the Frontier
+          </h2>
+          <p
+            id="modalToolName"
+            class="text-lime text-sm font-mono mb-4 uppercase tracking-widest"
+          >
+            Assistant Name
+          </p>
+          <p class="text-sm opacity-60 leading-relaxed mb-8">
+            This assistant is currently in neural training. Join the early
+            access waitlist to be first in line.
+          </p>
+
+          <div class="space-y-4">
+            <input
+              type="email"
+              placeholder="merchant@business.com"
+              class="w-full bg-bg3 border border-white/5 rounded-2xl px-6 py-4 text-sm outline-none focus:border-lime transition-all"
+            />
+            <button
+              onclick="closeModal()"
+              class="w-full py-4 bg-lime text-bg font-head font-bold rounded-2xl hover:shadow-[0_0_30px_rgba(200,255,0,0.3)] transition-all"
+            >
+              Reserve My Spot
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sidebar (Shared with Dashboard) -->
+    <aside
+      class="fixed inset-y-0 left-0 z-[101] w-72 bg-bg2 border-r border-white/5 transform -translate-x-full lg:translate-x-0 transition-transform duration-300"
+    >
+      <div class="p-8">
+        <div class="logo font-head text-2xl font-bold text-white mb-10">
+          Sellr<span class="text-lime">POS</span>
+        </div>
+        <nav class="space-y-1 -mx-8">
+          <a href="/dashboard" class="sidebar-link">📊 Overview</a>
+          <a href="#" class="sidebar-link">🛍️ Orders</a>
+          <a href="/ai-tools" class="sidebar-link active">✨ AI Tools</a>
+          <a href="/store" class="sidebar-link">📦 Inventory</a>
+          <a href="/customers" class="sidebar-link">👥 Customers</a>
+          <a href="/settings" class="sidebar-link">⚙️ Settings</a>
+        </nav>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 lg:ml-72 min-h-screen relative z-10">
+      <header
+        class="sticky top-0 z-[100] bg-bg/80 backdrop-blur-xl border-b border-white/5 px-8 pt-10 pb-6 flex items-center justify-between"
+      >
+        <div>
+          <h1 class="font-head text-3xl text-white font-bold mb-1">
+            AI Business Suite
+          </h1>
+          <p class="text-xs opacity-40">
+            Intelligent helpers to optimize your operations
+          </p>
+        </div>
+        <div class="flex items-center gap-4">
+          <button
+            class="bg-white/5 px-4 py-2 rounded-xl text-xs font-bold border border-white/5"
+          >
+            Help
+          </button>
+        </div>
+      </header>
+
+      <div class="p-8 space-y-8">
+        <!-- Categories -->
+        <div class="flex flex-wrap gap-3">
+          <div class="category-pill active">All Assistants</div>
+          <div class="category-pill">Analytics</div>
+          <div class="category-pill">Inventory</div>
+          <div class="category-pill">Customer</div>
+          <div class="category-pill">Financial</div>
+          <div class="category-pill">Marketing</div>
+        </div>
+
+        <!-- Tools Grid -->
+        <div class="grid grid-cols-1 xl:grid-cols-2 gap-8">
+          <!-- Sales Insights (Complete) -->
+          <div
+            class="tool-card border-lime/20 cursor-pointer"
+            onclick="location.href = '/sales-insights'"
+          >
+            <div class="flex justify-between items-start mb-6">
+              <div
+                class="w-14 h-14 bg-lime/10 rounded-2xl flex items-center justify-center text-3xl"
+              >
+                💹
+              </div>
+              <span class="badge bg-lime text-bg border-lime"
+                >Ready to Deploy</span
+              >
+            </div>
+            <h3 class="font-head text-xl text-white font-bold mb-3">
+              Sales Insights Assistant
+            </h3>
+            <p class="text-sm opacity-50 mb-6 leading-relaxed">
+              Analyzes sales patterns and provides actionable insights for
+              revenue optimization.
+            </p>
+            <div class="space-y-3 mb-8">
+              <div class="flex items-center gap-3 text-xs">
+                <span class="text-lime">✔</span> Best-selling Trends
+              </div>
+              <div class="flex items-center gap-3 text-xs">
+                <span class="text-lime">✔</span> Pricing Strategies
+              </div>
+            </div>
+            <div
+              class="mt-auto pt-6 border-t border-white/5 flex justify-between items-center"
+            >
+              <span
+                class="text-[10px] font-mono uppercase tracking-widest opacity-40"
+                >Phase 1 • High Priority</span
+              >
+              <span class="text-lime text-xs font-bold">Open Assistant →</span>
+            </div>
+          </div>
+
+          <!-- Smart Inventory -->
+          <div
+            class="tool-card cursor-pointer"
+            onclick="openWaitlist('Smart Inventory Assistant')"
+          >
+            <div class="flex justify-between items-start mb-6">
+              <div
+                class="w-14 h-14 bg-white/5 rounded-2xl flex items-center justify-center text-3xl"
+              >
+                📦
+              </div>
+              <span class="badge bg-white/5 text-white/40 border-white/10"
+                >In Training</span
+              >
+            </div>
+            <h3 class="font-head text-xl text-white font-bold mb-3">
+              Smart Inventory Assistant
+            </h3>
+            <p class="text-sm opacity-50 mb-6 leading-relaxed">
+              Optimizes stock levels and prevents stockouts using predictive
+              analytics.
+            </p>
+            <div
+              class="mt-auto pt-6 border-t border-white/5 flex justify-between items-center"
+            >
+              <span
+                class="text-[10px] font-mono uppercase tracking-widest opacity-40"
+                >Phase 1 • High Priority</span
+              >
+              <span
+                class="text-white/20 text-xs font-bold group-hover:text-lime transition-colors"
+                >Join Waitlist</span
+              >
+            </div>
+          </div>
+
+          <!-- Financial Health -->
+          <div
+            class="tool-card cursor-pointer"
+            onclick="openWaitlist('Financial Health Assistant')"
+          >
+            <div class="flex justify-between items-start mb-6">
+              <div
+                class="w-14 h-14 bg-white/5 rounded-2xl flex items-center justify-center text-3xl"
+              >
+                🏦
+              </div>
+              <span class="badge bg-white/5 text-white/40 border-white/10"
+                >In Training</span
+              >
+            </div>
+            <h3 class="font-head text-xl text-white font-bold mb-3">
+              Financial Health Assistant
+            </h3>
+            <p class="text-sm opacity-50 mb-6 leading-relaxed">
+              Monitors business financial health and provides actionable
+              recommendations.
+            </p>
+            <div
+              class="mt-auto pt-6 border-t border-white/5 flex justify-between items-center"
+            >
+              <span
+                class="text-[10px] font-mono uppercase tracking-widest opacity-40"
+                >Phase 1 • High ROI</span
+              >
+              <span
+                class="text-white/20 text-xs font-bold group-hover:text-lime transition-colors"
+                >Join Waitlist</span
+              >
+            </div>
+          </div>
+
+          <!-- Customer Behavior -->
+          <div
+            class="tool-card cursor-pointer"
+            onclick="openWaitlist('Customer Behavior Assistant')"
+          >
+            <div class="flex justify-between items-start mb-6">
+              <div
+                class="w-14 h-14 bg-white/5 rounded-2xl flex items-center justify-center text-3xl"
+              >
+                👥
+              </div>
+              <span class="badge bg-white/5 text-white/40 border-white/10"
+                >Development</span
+              >
+            </div>
+            <h3 class="font-head text-xl text-white font-bold mb-3">
+              Customer Behavior Assistant
+            </h3>
+            <p class="text-sm opacity-50 mb-6 leading-relaxed">
+              Analyzes purchase patterns to improve service and increase
+              loyalty.
+            </p>
+            <div
+              class="mt-auto pt-6 border-t border-white/5 flex justify-between items-center"
+            >
+              <span
+                class="text-[10px] font-mono uppercase tracking-widest opacity-40"
+                >Phase 2 • Moderate</span
+              >
+              <span
+                class="text-white/20 text-xs font-bold group-hover:text-lime transition-colors"
+                >Join Waitlist</span
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      const modal = document.getElementById("waitlistModal");
+      const modalName = document.getElementById("modalToolName");
+
+      function openWaitlist(name) {
+        modalName.innerText = name;
+        modal.classList.remove("opacity-0", "pointer-events-none");
+      }
+
+      function closeModal() {
+        modal.classList.add("opacity-0", "pointer-events-none");
+      }
+    </script>
+  </body>
+</html>

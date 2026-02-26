@@ -1,0 +1,482 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Merchant Dashboard | Sellr POS</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=DM+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              bg: "#0f0f14",
+              bg2: "#16161d",
+              bg3: "#1e1e28",
+              lime: "#c8ff00",
+              clay: "#c65d1e",
+              gray: "#b5b5b5",
+            },
+            fontFamily: {
+              head: ["Space Grotesk", "sans-serif"],
+              body: ["DM Sans", "sans-serif"],
+              mono: ["JetBrains Mono", "monospace"],
+            },
+          },
+        },
+      };
+    </script>
+    <style type="text/tailwindcss">
+      @layer base {
+        body {
+          @apply bg-bg text-gray font-body overflow-x-hidden min-h-screen flex;
+        }
+      }
+      @layer components {
+        .sidebar-link {
+          @apply flex items-center gap-4 px-6 py-4 text-sm font-medium transition-all border-l-4 border-transparent hover:bg-white/5;
+        }
+        .sidebar-link.active {
+          @apply bg-lime/5 border-lime text-white;
+        }
+        .stat-card {
+          @apply bg-bg2 border border-white/5 p-6 rounded-2xl relative overflow-hidden;
+        }
+        .order-card {
+          @apply bg-bg2 border border-white/5 p-5 rounded-2xl transition-all hover:border-lime/30;
+        }
+        .badge {
+          @apply px-2.5 py-1 rounded-lg text-[10px] font-head font-bold uppercase tracking-wider;
+        }
+        .btn-action {
+          @apply px-4 py-2 rounded-xl font-head text-xs font-bold transition-all;
+        }
+      }
+      canvas#particles {
+        @apply fixed inset-0 z-0 pointer-events-none opacity-20;
+      }
+      ::-webkit-scrollbar {
+        @apply w-1.5;
+      }
+      ::-webkit-scrollbar-track {
+        @apply bg-bg;
+      }
+      ::-webkit-scrollbar-thumb {
+        @apply bg-white/10 rounded-full hover:bg-white/20;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="particles"></canvas>
+
+    <!-- Sidebar -->
+    <aside
+      id="sidebar"
+      class="fixed inset-y-0 left-0 z-[101] w-72 bg-bg2 border-r border-white/5 transform -translate-x-full lg:translate-x-0 transition-transform duration-300"
+    >
+      <div class="p-8">
+        <div class="logo font-head text-2xl font-bold text-white mb-10">
+          Sellr<span class="text-lime">POS</span>
+        </div>
+
+        <nav class="space-y-1 -mx-8">
+          <a href="#" class="sidebar-link active">
+            <span class="text-xl">📊</span> Overview
+          </a>
+          <a href="#" class="sidebar-link">
+            <span class="text-xl">🛍️</span> Orders
+            <span
+              class="ml-auto bg-clay text-white text-[10px] px-2 py-0.5 rounded-full"
+              >12</span
+            >
+          </a>
+          <a href="/ai-tools" class="sidebar-link">
+            <span class="text-xl">✨</span> AI Tools
+          </a>
+          <a href="/store" class="sidebar-link">
+            <span class="text-xl">📦</span> Inventory
+          </a>
+          <a href="#" class="sidebar-link">
+            <span class="text-xl">👥</span> Customers
+          </a>
+          <a href="#" class="sidebar-link">
+            <span class="text-xl">📈</span> Analytics
+          </a>
+          <a href="#" class="sidebar-link">
+            <span class="text-xl">⚙️</span> Settings
+          </a>
+        </nav>
+      </div>
+
+      <div class="absolute bottom-0 left-0 w-full p-8 border-t border-white/5">
+        <div class="flex items-center gap-3">
+          <div
+            class="w-10 h-10 rounded-full bg-lime/10 flex items-center justify-center text-xl"
+          >
+            🏬
+          </div>
+          <div>
+            <p class="text-sm font-bold text-white leading-none mb-1">
+              Big Mike's Electronics
+            </p>
+            <p
+              class="text-[10px] opacity-40 uppercase tracking-widest leading-none"
+            >
+              Pro Merchant
+            </p>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 lg:ml-72 min-h-screen relative z-10 flex flex-col">
+      <!-- Header -->
+      <header
+        class="sticky top-0 z-[100] bg-bg/80 backdrop-blur-xl border-b border-white/5 px-8 pt-10 pb-6 flex items-center justify-between"
+      >
+        <div>
+          <h1 class="font-head text-2xl text-white font-bold mb-1">
+            Orders Dashboard
+          </h1>
+          <p class="text-xs opacity-40">
+            Managing 12 active orders across 2 branches
+          </p>
+        </div>
+
+        <div class="flex items-center gap-4">
+          <button
+            class="w-10 h-10 rounded-xl bg-bg2 border border-white/5 flex items-center justify-center hover:bg-white/5 transition-all relative"
+          >
+            🔔
+            <span
+              class="absolute top-2 right-2 w-2 h-2 bg-lime rounded-full border-2 border-bg2"
+            ></span>
+          </button>
+          <button
+            id="toggleSidebar"
+            class="lg:hidden w-10 h-10 rounded-xl bg-bg2 border border-white/5 flex items-center justify-center"
+          >
+            ☰
+          </button>
+        </div>
+      </header>
+
+      <div class="p-8 space-y-8">
+        <!-- Quick Stats -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div class="stat-card group">
+            <p class="text-[10px] uppercase tracking-widest opacity-40 mb-2">
+              Daily Revenue
+            </p>
+            <h3 class="font-head text-2xl text-white font-bold mb-1">
+              KES 142,500
+            </h3>
+            <p class="text-[10px] text-lime font-bold">↑ 12.4% vs yesterday</p>
+            <div
+              class="absolute top-4 right-4 opacity-10 group-hover:opacity-100 transition-opacity"
+            >
+              💰
+            </div>
+          </div>
+          <div class="stat-card">
+            <p class="text-[10px] uppercase tracking-widest opacity-40 mb-2">
+              Total Orders
+            </p>
+            <h3 class="font-head text-2xl text-white font-bold mb-1">42</h3>
+            <p class="text-[10px] opacity-40">8 pending pickup</p>
+            <div class="absolute top-4 right-4 opacity-10">📦</div>
+          </div>
+          <div class="stat-card">
+            <p class="text-[10px] uppercase tracking-widest opacity-40 mb-2">
+              Active Customers
+            </p>
+            <h3 class="font-head text-2xl text-white font-bold mb-1">1,204</h3>
+            <p class="text-[10px] text-lime font-bold">+18 new today</p>
+            <div class="absolute top-4 right-4 opacity-10">👥</div>
+          </div>
+          <div class="stat-card">
+            <p class="text-[10px] uppercase tracking-widest opacity-40 mb-2">
+              System Status
+            </p>
+            <h3 class="font-head text-2xl text-lime font-bold mb-1">
+              Operational
+            </h3>
+            <p class="text-[10px] opacity-40">Offline Sync Active</p>
+            <div class="absolute top-4 right-4 opacity-10">⚡</div>
+          </div>
+        </div>
+
+        <!-- Orders Section -->
+        <div class="space-y-6">
+          <div
+            class="flex flex-col md:flex-row md:items-center justify-between gap-4"
+          >
+            <div
+              class="flex gap-2 p-1 bg-white/5 rounded-xl border border-white/5 w-fit"
+            >
+              <button
+                class="px-4 py-2 rounded-lg text-xs font-bold bg-lime text-bg shadow-lg"
+              >
+                New Incoming
+              </button>
+              <button
+                class="px-4 py-2 rounded-lg text-xs font-bold text-white/40 hover:text-white transition-all"
+              >
+                Preparing
+              </button>
+              <button
+                class="px-4 py-2 rounded-lg text-xs font-bold text-white/40 hover:text-white transition-all"
+              >
+                Out for Delivery
+              </button>
+              <button
+                class="px-4 py-2 rounded-lg text-xs font-bold text-white/40 hover:text-white transition-all"
+              >
+                Completed
+              </button>
+            </div>
+            <div class="flex gap-4">
+              <input
+                type="text"
+                placeholder="Search orders..."
+                class="bg-bg2 border border-white/5 rounded-xl px-4 py-2 text-xs focus:border-lime outline-none transition-all w-full md:w-64"
+              />
+              <button
+                class="btn-action bg-bg2 text-white border border-white/5"
+              >
+                Filter
+              </button>
+            </div>
+          </div>
+
+          <!-- Orders Grid -->
+          <div class="grid grid-cols-1 xl:grid-cols-2 gap-6">
+            <!-- Order Item -->
+            <div class="order-card group">
+              <div class="flex justify-between items-start mb-4">
+                <div class="flex items-center gap-3">
+                  <div
+                    class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-lg"
+                  >
+                    🛍️
+                  </div>
+                  <div>
+                    <p class="text-sm font-bold text-white">#ORD-90128</p>
+                    <p class="text-[10px] opacity-40 font-mono">
+                      2 mins ago • M-Pesa
+                    </p>
+                  </div>
+                </div>
+                <span class="badge bg-clay/10 text-clay border-clay/20"
+                  >Action Required</span
+                >
+              </div>
+              <div class="space-y-2 mb-6 border-y border-white/5 py-4">
+                <div class="flex justify-between text-xs">
+                  <span class="opacity-40">Customer:</span>
+                  <span class="text-white font-medium">David Kamau</span>
+                </div>
+                <div class="flex justify-between text-xs">
+                  <span class="opacity-40">Items:</span>
+                  <span class="text-white font-medium"
+                    >ANC Headphones (1), USB-C Cable (2)</span
+                  >
+                </div>
+                <div class="flex justify-between text-xs">
+                  <span class="opacity-40">Total Amount:</span>
+                  <span class="text-lime font-bold">KES 5,800.00</span>
+                </div>
+              </div>
+              <div class="flex gap-3">
+                <button class="btn-action bg-lime text-bg flex-1">
+                  Accept Order
+                </button>
+                <button
+                  class="btn-action bg-white/5 text-white/60 border border-white/5"
+                >
+                  Reject
+                </button>
+                <button
+                  class="btn-action bg-white/5 text-white/60 border border-white/5"
+                >
+                  Details
+                </button>
+              </div>
+            </div>
+
+            <!-- Order Item -->
+            <div class="order-card group">
+              <div class="flex justify-between items-start mb-4">
+                <div class="flex items-center gap-3">
+                  <div
+                    class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-lg"
+                  >
+                    🚚
+                  </div>
+                  <div>
+                    <p class="text-sm font-bold text-white">#ORD-90127</p>
+                    <p class="text-[10px] opacity-40 font-mono">
+                      15 mins ago • Paid
+                    </p>
+                  </div>
+                </div>
+                <span class="badge bg-lime/10 text-lime border-lime/20"
+                  >Ready for Pickup</span
+                >
+              </div>
+              <div class="space-y-2 mb-6 border-y border-white/5 py-4">
+                <div class="flex justify-between text-xs">
+                  <span class="opacity-40">Customer:</span>
+                  <span class="text-white font-medium">Sarah Njeri</span>
+                </div>
+                <div class="flex justify-between text-xs">
+                  <span class="opacity-40">Items:</span>
+                  <span class="text-white font-medium"
+                    >Smart Watch Ultra (1)</span
+                  >
+                </div>
+                <div class="flex justify-between text-xs">
+                  <span class="opacity-40">Total Amount:</span>
+                  <span class="text-lime font-bold">KES 12,500.00</span>
+                </div>
+              </div>
+              <div class="flex gap-3">
+                <button
+                  class="btn-action bg-white/5 text-white border border-white/10 flex-1"
+                >
+                  Mark as Dispatched
+                </button>
+                <button
+                  class="btn-action bg-white/5 text-white/40 border border-white/5"
+                >
+                  Contact
+                </button>
+                <button
+                  class="btn-action bg-white/5 text-white/40 border border-white/5"
+                >
+                  Details
+                </button>
+              </div>
+            </div>
+
+            <!-- Order Item -->
+            <div
+              class="order-card group opacity-60 grayscale hover:grayscale-0 hover:opacity-100"
+            >
+              <div class="flex justify-between items-start mb-4">
+                <div class="flex items-center gap-3">
+                  <div
+                    class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-lg"
+                  >
+                    🍔
+                  </div>
+                  <div>
+                    <p class="text-sm font-bold text-white">#ORD-90125</p>
+                    <p class="text-[10px] opacity-40 font-mono">
+                      1 hour ago • Cash
+                    </p>
+                  </div>
+                </div>
+                <span class="badge bg-white/5 text-white/40 border-white/10"
+                  >Completed</span
+                >
+              </div>
+              <div class="space-y-2 mb-6 border-y border-white/5 py-4">
+                <div class="flex justify-between text-xs">
+                  <span class="opacity-40">Items:</span>
+                  <span class="text-white font-medium text-right"
+                    >Bluetooth Speaker (2), AA Batteries (10)</span
+                  >
+                </div>
+                <div class="flex justify-between text-xs">
+                  <span class="opacity-40">Total:</span>
+                  <span class="text-white font-bold">KES 9,400.00</span>
+                </div>
+              </div>
+              <div class="flex gap-3">
+                <button
+                  class="btn-action bg-white/5 text-white border border-white/10 flex-1"
+                >
+                  Re-print Receipt
+                </button>
+                <button
+                  class="btn-action bg-white/5 text-white/40 border border-white/5"
+                >
+                  Details
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Overlay for Mobile Sidebar -->
+    <div
+      id="sidebarOverlay"
+      class="fixed inset-0 bg-bg/80 backdrop-blur-sm z-[100] hidden lg:hidden"
+    ></div>
+
+    <script>
+      // Sidebar Toggle Logic
+      const toggleBtn = document.getElementById("toggleSidebar");
+      const sidebar = document.getElementById("sidebar");
+      const overlay = document.getElementById("sidebarOverlay");
+
+      function toggleSidebar() {
+        sidebar.classList.toggle("-translate-x-full");
+        overlay.classList.toggle("hidden");
+      }
+
+      toggleBtn.addEventListener("click", toggleSidebar);
+      overlay.addEventListener("click", toggleSidebar);
+
+      // Particles Background
+      (function () {
+        const c = document.getElementById("particles"),
+          x = c.getContext("2d");
+        let w,
+          h,
+          pts = [];
+        function resize() {
+          w = c.width = window.innerWidth;
+          h = c.height = window.innerHeight;
+          pts = [];
+          for (let i = 0; i < 30; i++)
+            pts.push({
+              x: Math.random() * w,
+              y: Math.random() * h,
+              vx: (Math.random() - 0.5) * 0.05,
+              vy: (Math.random() - 0.5) * 0.05,
+              r: Math.random() * 1 + 0.2,
+            });
+        }
+        resize();
+        window.addEventListener("resize", resize);
+        function draw() {
+          x.clearRect(0, 0, w, h);
+          pts.forEach((p, i) => {
+            p.x += p.vx;
+            p.y += p.vy;
+            if (p.x < 0 || p.x > w) p.vx *= -1;
+            if (p.y < 0 || p.y > h) p.vy *= -1;
+            x.beginPath();
+            x.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+            x.fillStyle = "rgba(200,255,0,0.1)";
+            x.fill();
+          });
+          requestAnimationFrame(draw);
+        }
+        draw();
+      })();
+    </script>
+  </body>
+</html>

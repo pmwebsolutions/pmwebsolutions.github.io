@@ -1,0 +1,529 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Track Order | Sellr POS — Real-time Commerce</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=DM+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              bg: "#0f0f14",
+              bg2: "#16161d",
+              bg3: "#1e1e28",
+              lime: "#c8ff00",
+              clay: "#c65d1e",
+              gray: "#b5b5b5",
+            },
+            fontFamily: {
+              head: ["Space Grotesk", "sans-serif"],
+              body: ["DM Sans", "sans-serif"],
+              mono: ["JetBrains Mono", "monospace"],
+            },
+            animation: {
+              "pulse-slow": "pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+            },
+          },
+        },
+      };
+    </script>
+    <style type="text/tailwindcss">
+      @layer base {
+        body {
+          @apply bg-bg text-gray font-body overflow-x-hidden min-h-screen flex flex-col;
+        }
+      }
+      :root {
+        --bg: #0f0f14;
+        --bg2: #16161d;
+        --bg3: #1e1e28;
+        --lime: #c8ff00;
+        --clay: #c65d1e;
+        --gray: #b5b5b5;
+        --white: #f0f0f0;
+        --font-head: "Space Grotesk", sans-serif;
+        --font-body: "DM Sans", sans-serif;
+        --font-mono: "JetBrains Mono", monospace;
+        --ease: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      }
+      @layer components {
+        .step-node {
+          @apply w-12 h-12 rounded-full border-2 border-white/10 bg-bg2 flex items-center justify-center text-xl transition-all duration-500 relative z-10;
+        }
+        .step-node.active {
+          @apply border-lime bg-lime/10 text-lime shadow-[0_0_20px_rgba(200,255,0,0.3)];
+        }
+        .step-node.completed {
+          @apply border-lime bg-lime text-bg;
+        }
+        .line-segment {
+          @apply flex-1 h-[2px] bg-white/10 relative overflow-hidden;
+        }
+        .line-segment .progress {
+          @apply absolute inset-0 bg-lime origin-left scale-x-0 transition-transform duration-1000 ease-out;
+        }
+        .feed-item {
+          @apply border-l-2 border-white/5 pl-6 pb-8 last:pb-0 relative;
+        }
+        .feed-item::before {
+          content: "";
+          @apply absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-bg2 border-2 border-white/10;
+        }
+        .feed-item.active::before {
+          @apply border-lime bg-lime shadow-[0_0_10px_rgba(200,255,0,0.5)];
+        }
+      }
+      canvas#particles {
+        @apply fixed inset-0 z-0 pointer-events-none opacity-30;
+      }
+      /* NAV */
+      nav {
+        position: fixed;
+        top: 0;
+        width: 100%;
+        z-index: 100;
+        padding: 20px 0;
+        background: rgba(15, 15, 20, 0.85);
+        backdrop-filter: blur(20px);
+        transition: all 0.4s var(--ease);
+      }
+      nav.scrolled {
+        background: rgba(15, 15, 20, 0.85);
+        backdrop-filter: blur(20px);
+        padding: 12px 0;
+        border-bottom: 1px solid rgba(200, 255, 0, 0.08);
+      }
+      nav .container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .nav-links {
+        display: flex;
+        align-items: center;
+        gap: 32px;
+      }
+      .nav-link {
+        color: var(--white);
+        font-family: var(--font-head);
+        font-size: 0.9rem;
+        font-weight: 500;
+        transition: color 0.3s;
+      }
+      .nav-link:hover {
+        color: var(--lime);
+      }
+      .logo {
+        font-family: var(--font-head);
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--white);
+        z-index: 101;
+      }
+      .nav-toggle {
+        display: none;
+        background: none;
+        border: none;
+        color: var(--white);
+        font-size: 1.8rem;
+        cursor: pointer;
+        z-index: 101;
+      }
+      /* MOBILE NAV */
+      @media (max-width: 991px) {
+        .nav-toggle {
+          display: block;
+        }
+        .nav-links {
+          position: fixed;
+          top: 0;
+          right: -100%;
+          width: 80%;
+          height: 100vh;
+          background: var(--bg2);
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          gap: 40px;
+          transition: all 0.4s var(--ease);
+          z-index: 100;
+          border-left: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .nav-links.active {
+          right: 0;
+        }
+        .nav-link {
+          font-size: 1.2rem;
+        }
+      }
+
+      /* FOOTER */
+      footer {
+        padding: 60px 0 30px;
+        border-top: 1px solid rgba(255, 255, 255, 0.06);
+      }
+      .logo {
+        font-family: var(--font-head);
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--white);
+        z-index: 101;
+      }
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 16px 32px;
+        border-radius: 60px;
+        font-family: var(--font-head);
+        font-weight: 600;
+        font-size: 0.95rem;
+        cursor: pointer;
+        border: none;
+        transition: all 0.3s var(--ease);
+        position: relative;
+      }
+      .btn-primary {
+        background: var(--lime);
+        color: var(--bg);
+        box-shadow: 0 0 30px rgba(200, 255, 0, 0.2);
+      }
+      .btn-primary:hover {
+        box-shadow: 0 0 50px rgba(200, 255, 0, 0.4);
+        transform: translateY(-2px);
+      }
+      .btn-secondary {
+        background: transparent;
+        color: var(--white);
+        border: 1.5px solid rgba(255, 255, 255, 0.2);
+      }
+      .btn-secondary:hover {
+        border-color: var(--lime);
+        color: var(--lime);
+      }
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 24px;
+        position: relative;
+        z-index: 2;
+      }
+      .footer-brand p {
+        font-size: 0.85rem;
+        line-height: 1.7;
+        max-width: 300px;
+        margin-top: 12px;
+      }
+      .footer-bottom {
+        text-align: center;
+        padding-top: 24px;
+        border-top: 1px solid rgba(255, 255, 255, 0.04);
+        font-size: 0.8rem;
+        color: rgba(255, 255, 255, 0.3);
+      }
+      .footer-links {
+        display: flex;
+        gap: 24px;
+        justify-content: center;
+        margin-bottom: 12px;
+      }
+      .footer-links a {
+        color: var(--gray);
+        font-size: 0.8rem;
+        transition: color 0.3s;
+      }
+      .footer-links a:hover {
+        color: var(--lime);
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="particles"></canvas>
+    <nav id="nav">
+      <div class="container">
+        <a
+          href="/"
+          class="logo flex items-center gap-3 font-family-head font-bold text-2xl text-white no-underline"
+        >
+          <img src="./favicon.svg" alt="SellrPOS Icon" class="w-8 h-8" />
+          <span>Sellr<span class="text-lime">POS</span></span>
+        </a>
+        <button class="nav-toggle" id="navToggle">☰</button>
+        <div class="nav-links" id="navLinks">
+          <a href="/" class="nav-link">Home</a>
+          <a href="/store" class="nav-link">Store</a>
+          <a href="/track" class="nav-link">Track Order</a>
+          <a href="/contact" class="nav-link">Contact Us</a>
+          <a href="/cart" class="nav-link">🛒</a>
+        </div>
+      </div>
+    </nav>
+    <main
+      class="max-w-5xl mx-auto px-6 py-12 lg:py-20 flex-1 relative z-10 w-full pt-22"
+    >
+      <!-- Header -->
+      <div class="text-center mb-16">
+        <h1 class="font-head text-4xl md:text-5xl text-white font-bold mb-4">
+          Track Your <span class="text-lime">Order</span>
+        </h1>
+        <p class="text-lg opacity-60">Order #SLR-99283 • Westlands, Nairobi</p>
+      </div>
+
+      <!-- Visual Stepper -->
+      <div
+        class="bg-bg2/40 border border-white/5 backdrop-blur-xl rounded-[40px] p-8 md:p-12 mb-12 shadow-2xl"
+      >
+        <div class="flex items-center mb-12">
+          <div class="flex flex-col items-center flex-1">
+            <div class="step-node completed">📦</div>
+            <span
+              class="text-[10px] font-head uppercase tracking-widest mt-4 text-white font-bold"
+              >Placed</span
+            >
+          </div>
+          <div class="line-segment">
+            <div class="progress scale-x-100"></div>
+          </div>
+          <div class="flex flex-col items-center flex-1">
+            <div class="step-node completed">⚙️</div>
+            <span
+              class="text-[10px] font-head uppercase tracking-widest mt-4 text-white font-bold"
+              >Processing</span
+            >
+          </div>
+          <div class="line-segment">
+            <div class="progress scale-x-100"></div>
+          </div>
+          <div class="flex flex-col items-center flex-1">
+            <div class="step-node active animate-pulse-slow">🚚</div>
+            <span
+              class="text-[10px] font-head uppercase tracking-widest mt-4 text-lime font-bold"
+              >In Transit</span
+            >
+          </div>
+          <div class="line-segment"><div class="progress"></div></div>
+          <div class="flex flex-col items-center flex-1">
+            <div class="step-node">🏠</div>
+            <span
+              class="text-[10px] font-head uppercase tracking-widest mt-4 opacity-30"
+              >Delivered</span
+            >
+          </div>
+        </div>
+
+        <!-- Estimated Arrival Card -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div
+            class="md:col-span-2 bg-bg3/50 rounded-3xl p-6 flex items-center gap-6 border border-white/5"
+          >
+            <div
+              class="w-16 h-16 rounded-full bg-lime/10 flex items-center justify-center text-3xl"
+            >
+              ⏰
+            </div>
+            <div>
+              <h3 class="font-head text-white text-xl font-bold">
+                ETA: 45 Minutes
+              </h3>
+              <p class="text-sm opacity-50">
+                Rider is currently at Museum Hill, heading to your location.
+              </p>
+            </div>
+          </div>
+          <div
+            class="bg-bg3/50 rounded-3xl p-6 border border-white/5 text-center flex flex-col justify-center"
+          >
+            <p class="text-[10px] uppercase tracking-widest opacity-40 mb-2">
+              Rider Contact
+            </p>
+            <a href="tel:0700000000" class="text-lime font-bold hover:underline"
+              >+254 700 000 000</a
+            >
+          </div>
+        </div>
+      </div>
+
+      <!-- Detailed Status & Info -->
+      <div class="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-12">
+        <!-- Live Feed -->
+        <div class="space-y-4">
+          <h2 class="font-head text-2xl text-white font-bold mb-8">
+            Live Journey Log
+          </h2>
+          <div class="feed-item active">
+            <p class="font-mono text-xs text-lime mb-1">03:05 PM</p>
+            <h4 class="text-white font-bold">Rider picked up the order</h4>
+            <p class="text-sm opacity-50">
+              Your rider (Boda #334) is now moving towards Westlands.
+            </p>
+          </div>
+          <div class="feed-item">
+            <p class="font-mono text-xs text-white/30 mb-1">02:48 PM</p>
+            <h4 class="text-white font-bold">Quality Check Passed</h4>
+            <p class="text-sm opacity-50">
+              Merchant has completed the packaging and sealed your items.
+            </p>
+          </div>
+          <div class="feed-item">
+            <p class="font-mono text-xs text-white/30 mb-1">02:30 PM</p>
+            <h4 class="text-white font-bold">Order Received</h4>
+            <p class="text-sm opacity-50">
+              Merchant (Sellr Hub - CBD) is now processing your request.
+            </p>
+          </div>
+          <div class="feed-item">
+            <p class="font-mono text-xs text-white/30 mb-1">02:29 PM</p>
+            <h4 class="text-white font-bold">Payment Confirmed via M-Pesa</h4>
+            <p class="text-sm opacity-50">
+              Transaction TXN88273918 successful.
+            </p>
+          </div>
+        </div>
+
+        <!-- Sidebar Info -->
+        <div class="space-y-8">
+          <div class="bg-bg2/50 border border-white/5 rounded-3xl p-8">
+            <h3 class="font-head text-white font-bold mb-4">
+              Delivery Address
+            </h3>
+            <p class="text-sm opacity-60 leading-relaxed italic">
+              The Mirage Tower<br />
+              5th Floor, Suite 12<br />
+              Waiyaki Way, Nairobi
+            </p>
+          </div>
+          <div class="bg-bg2/50 border border-white/5 rounded-3xl p-8">
+            <h3 class="font-head text-white font-bold mb-4">Items Summary</h3>
+            <div class="space-y-3">
+              <div class="flex justify-between text-xs">
+                <span class="opacity-50">1x Wireless Headphones</span>
+                <span class="text-white font-mono">KES 4,500</span>
+              </div>
+              <div class="flex justify-between text-xs">
+                <span class="opacity-50">2x Coffee Beans (500g)</span>
+                <span class="text-white font-mono">KES 2,400</span>
+              </div>
+              <div
+                class="pt-3 border-t border-white/5 flex justify-between text-sm font-bold"
+              >
+                <span class="text-white">Total Paid</span>
+                <span class="text-lime font-mono">KES 6,900</span>
+              </div>
+            </div>
+          </div>
+          <button
+            class="w-full py-4 border border-lime/30 text-lime font-head font-bold rounded-xl hover:bg-lime/5 transition-all"
+            onclick="window.location.href = '/contact'"
+          >
+            Need Help? Chat Support
+          </button>
+        </div>
+      </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="mt-10">
+      <div class="container">
+        <div class="">
+          <div class="footer-brand">
+            <a
+              href="/"
+              class="logo flex items-center gap-3 font-family-head font-bold text-2xl mb-2 text-white"
+            >
+              <img src="./logo.svg" alt="SellrPOS Icon" class="w-40 h-15" />
+            </a>
+            <p>
+              AI-powered, offline-first point of sale built for East African
+              retailers ready to scale.
+            </p>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <div class="footer-links">
+            <a href="/#features">Features</a>
+            <a href="/store">Storefront</a>
+            <a href="/#pricing">Pricing</a>
+            <a href="/contact">Contact</a>
+            <a href="/privacy">Privacy</a>
+            <a href="/terms">Terms</a>
+          </div>
+          <p>© 2026 Sellr POS. Built in Nairobi 🇰🇪</p>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      // Particles Background
+      (function () {
+        const c = document.getElementById("particles"),
+          x = c.getContext("2d");
+        let w,
+          h,
+          pts = [];
+        function resize() {
+          w = c.width = window.innerWidth;
+          h = c.height = window.innerHeight;
+          pts = [];
+          for (let i = 0; i < 40; i++)
+            pts.push({
+              x: Math.random() * w,
+              y: Math.random() * h,
+              vx: (Math.random() - 0.5) * 0.1,
+              vy: (Math.random() - 0.5) * 0.1,
+              r: Math.random() * 1.2 + 0.3,
+            });
+        }
+        resize();
+        window.addEventListener("resize", resize);
+        function draw() {
+          x.clearRect(0, 0, w, h);
+          pts.forEach((p, i) => {
+            p.x += p.vx;
+            p.y += p.vy;
+            if (p.x < 0 || p.x > w) p.vx *= -1;
+            if (p.y < 0 || p.y > h) p.vy *= -1;
+            x.beginPath();
+            x.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+            x.fillStyle = "rgba(200,255,0,0.15)";
+            x.fill();
+          });
+          requestAnimationFrame(draw);
+        }
+        draw();
+      })();
+      // Nav Scroll
+      const nav = document.getElementById("nav");
+      window.addEventListener("scroll", () => {
+        nav.classList.toggle("scrolled", window.scrollY > 50);
+      });
+
+      // Mobile Menu Toggle
+      const navToggle = document.getElementById("navToggle");
+      const navLinks = document.getElementById("navLinks");
+
+      navToggle.addEventListener("click", () => {
+        navLinks.classList.toggle("active");
+        navToggle.textContent = navLinks.classList.contains("active")
+          ? "✕"
+          : "☰";
+      });
+
+      // Close menu on link click
+      navLinks.querySelectorAll(".nav-link").forEach((link) => {
+        link.addEventListener("click", () => {
+          navLinks.classList.remove("active");
+          navToggle.textContent = "☰";
+        });
+      });
+    </script>
+  </body>
+</html>
