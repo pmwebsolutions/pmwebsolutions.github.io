@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+
+<html class="scroll-smooth" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>About Us | Akusama</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&amp;family=Inter:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "on-tertiary-container": "#76e2ff",
+              "inverse-surface": "#2e3132",
+              "primary-fixed": "#dae2ff",
+              "on-background": "#191c1e",
+              "primary-container": "#0052cc",
+              "on-primary-fixed-variant": "#0040a2",
+              "inverse-on-surface": "#f0f1f3",
+              "surface-container-high": "#e7e8ea",
+              "surface-container": "#edeef0",
+              "on-error-container": "#93000a",
+              "on-error": "#ffffff",
+              "on-secondary": "#ffffff",
+              "on-surface-variant": "#434654",
+              "tertiary-container": "#006477",
+              "surface-container-low": "#f3f4f6",
+              "on-tertiary-fixed-variant": "#004e5d",
+              "on-secondary-container": "#006374",
+              "inverse-primary": "#b2c5ff",
+              "surface-container-lowest": "#ffffff",
+              "outline-variant": "#c3c6d6",
+              "secondary-container": "#6ae1ff",
+              "error": "#ba1a1a",
+              "on-secondary-fixed": "#001f26",
+              "primary-fixed-dim": "#b2c5ff",
+              "on-primary": "#ffffff",
+              "tertiary-fixed": "#afecff",
+              "secondary": "#00687a",
+              "on-surface": "#191c1e",
+              "surface-variant": "#e1e2e4",
+              "surface": "#f8f9fb",
+              "primary": "#003d9b",
+              "on-secondary-fixed-variant": "#004e5d",
+              "tertiary-fixed-dim": "#48d7f9",
+              "surface-tint": "#0c56d0",
+              "surface-dim": "#d9dadc",
+              "on-primary-container": "#c4d2ff",
+              "on-primary-fixed": "#001848",
+              "on-tertiary-fixed": "#001f27",
+              "background": "#f8f9fb",
+              "tertiary": "#004b59",
+              "surface-bright": "#f8f9fb",
+              "secondary-fixed-dim": "#5dd6f3",
+              "surface-container-highest": "#e1e2e4",
+              "secondary-fixed": "#adecff",
+              "outline": "#737685",
+              "on-tertiary": "#ffffff",
+              "error-container": "#ffdad6"
+            },
+            fontFamily: {
+              "headline": ["Manrope"],
+              "body": ["Inter"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+<style>
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      }
+      .editorial-shadow {
+        box-shadow: 0px 20px 40px rgba(0, 61, 155, 0.06);
+      }
+      .glass-nav {
+        background: rgba(248, 249, 251, 0.8);
+        backdrop-filter: blur(20px);
+      }
+      .primary-gradient {
+        background: linear-gradient(135deg, #003d9b 0%, #0052cc 100%);
+      }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body antialiased">
+<!-- TopNavBar -->
+<header class="fixed top-0 w-full z-50 glass-nav">
+<div class="flex justify-between items-center max-w-7xl mx-auto px-6 py-4">
+<div class="text-2xl font-bold tracking-tighter text-slate-900 dark:text-slate-100 font-headline">
+                Akusama
+            </div>
+<nav class="hidden md:flex items-center gap-8 font-manrope font-semibold tracking-tight">
+<a class="text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-300 transition-colors" href="/services">Services</a>
+<a class="text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-300 transition-colors" href="#">Industries</a>
+<a class="text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-300 transition-colors" href="/portfolio">Portfolio</a>
+<a class="text-blue-700 dark:text-blue-400 border-b-2 border-blue-700 dark:border-blue-400 pb-1" href="/about">About</a>
+</nav>
+<div class="flex items-center gap-4">
+<button class="primary-gradient text-on-primary px-6 py-2.5 rounded-md text-sm font-semibold hover:opacity-90 transition-all scale-95 active:scale-90">
+                    Get Started
+                </button>
+</div>
+</div>
+</header>
+<main class="pt-24">
+<!-- Section 1: Hero / Mission Statement -->
+<section class="relative py-20 lg:py-32 overflow-hidden">
+<div class="max-w-7xl mx-auto px-6">
+<div class="grid lg:grid-cols-12 gap-12 items-center">
+<div class="lg:col-span-8">
+<span class="inline-block text-secondary font-headline font-bold text-sm tracking-widest uppercase mb-4">Our Mission</span>
+<h1 class="text-5xl lg:text-7xl font-headline font-extrabold text-on-surface tracking-tighter leading-[1.1] mb-8">
+                            Empowering Kenyan SMEs through <span class="text-primary">editorial precision</span> and technical mastery.
+                        </h1>
+<p class="text-xl text-on-surface-variant max-w-2xl leading-relaxed">
+                            We bridge the gap between high-level architectural strategy and local business agility, delivering digital solutions that scale with your ambition.
+                        </p>
+</div>
+</div>
+</div>
+<!-- Decorative Element -->
+<div class="absolute top-0 right-0 w-1/3 h-full bg-surface-container-low -z-10 translate-x-1/4 skew-x-12"></div>
+</section>
+<!-- Section 2: The Story -->
+<section class="py-24 bg-surface-container-low">
+<div class="max-w-7xl mx-auto px-6">
+<div class="grid lg:grid-cols-2 gap-16 items-center">
+<div class="relative">
+<div class="aspect-square bg-surface-container-lowest rounded-xl overflow-hidden editorial-shadow">
+<img class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700" data-alt="Modern collaborative workspace with team brainstorming sessions" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCiwbBa4XAPc74UhA0jr0CxTHXrVg3hmxB59f3Bg1WW-frx1f0pa5QsE54wyYJ5SCL4btA0DtWlBrDoS1l3HUoIQYyL-Os-jrlPkyjm6iU-aVlzKa1eMWn_dNsnNhnCUbs4C6T8vFUbhRN7VjboMjYgHr7PzFgmpI7kkXzd-_6YGy-ApYO-AWdFrtluKV_I8fRNdKYU0AkR7E13c0UuZ8qM6BNjanqgfQ-RCGswbEe1nmcr3INksMssdSqTXawTPJnFIxfIm8JM7w"/>
+</div>
+<div class="absolute -bottom-8 -right-8 w-48 h-48 bg-secondary-fixed rounded-xl -z-10"></div>
+</div>
+<div>
+<h2 class="text-3xl lg:text-4xl font-headline font-bold mb-6 text-on-surface">The Story Behind the Pivot</h2>
+<div class="space-y-6 text-on-surface-variant leading-relaxed">
+<p>
+                                Akusama wasn't born in a typical agency boardroom. It began with a realization from our founders—former Product Managers at global tech giants—that Kenyan SMEs were being underserved by "template-first" developers.
+                            </p>
+<p>
+                                We saw a landscape of brilliant businesses held back by fragile digital infrastructure. Our rebranding from a boutique studio to a technical powerhouse was fueled by the desire to bring Silicon Valley-grade architectural precision to the vibrant markets of Nairobi, Mombasa, and beyond.
+                            </p>
+<p>
+                                Today, we combine ex-PM strategic thinking with world-class engineering to build platforms that don't just look beautiful—they perform under pressure.
+                            </p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Section 3: Values (Bento Grid) -->
+<section class="py-24">
+<div class="max-w-7xl mx-auto px-6">
+<div class="text-center mb-16">
+<span class="text-secondary font-headline font-bold text-sm tracking-widest uppercase mb-2 block">Our Foundation</span>
+<h2 class="text-4xl font-headline font-extrabold text-on-surface">Core Values &amp; Philosophy</h2>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<!-- Value 1 -->
+<div class="p-8 bg-surface-container-lowest editorial-shadow rounded-xl border-t-4 border-primary">
+<div class="w-12 h-12 flex items-center justify-center bg-primary-fixed text-primary rounded-lg mb-6">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">analytics</span>
+</div>
+<h3 class="text-xl font-headline font-bold mb-4">Results-Focused</h3>
+<p class="text-on-surface-variant text-sm leading-relaxed">
+                            We don't measure success by lines of code, but by the tangible ROI and operational efficiency we create for your enterprise.
+                        </p>
+</div>
+<!-- Value 2 -->
+<div class="p-8 bg-surface-container-lowest editorial-shadow rounded-xl border-t-4 border-secondary">
+<div class="w-12 h-12 flex items-center justify-center bg-secondary-fixed text-secondary rounded-lg mb-6">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">lightbulb</span>
+</div>
+<h3 class="text-xl font-headline font-bold mb-4">Innovative Spirit</h3>
+<p class="text-on-surface-variant text-sm leading-relaxed">
+                            Integrating AI and machine learning isn't a buzzword for us—it's a fundamental tool to automate and elevate your business.
+                        </p>
+</div>
+<!-- Value 3 -->
+<div class="p-8 bg-surface-container-lowest editorial-shadow rounded-xl border-t-4 border-tertiary-container">
+<div class="w-12 h-12 flex items-center justify-center bg-tertiary-fixed text-tertiary rounded-lg mb-6">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">layers</span>
+</div>
+<h3 class="text-xl font-headline font-bold mb-4">Scalable Tech</h3>
+<p class="text-on-surface-variant text-sm leading-relaxed">
+                            We build on cloud-native architectures that grow as you grow, ensuring your technical debt stays at zero while your reach expands.
+                        </p>
+</div>
+</div>
+</div>
+</section>
+<!-- Section 4: Team Highlights -->
+<section class="py-24 bg-surface">
+<div class="max-w-7xl mx-auto px-6">
+<div class="mb-16">
+<h2 class="text-4xl font-headline font-extrabold text-on-surface mb-4">Leadership &amp; Technical Experts</h2>
+<p class="text-on-surface-variant max-w-xl">A collective of specialists dedicated to redefining the Kenyan digital frontier.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+<!-- Team Member 1 -->
+<div class="group">
+<div class="aspect-[3/4] overflow-hidden rounded-xl bg-surface-container-high mb-4">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Portrait of a professional tech executive in a minimalist studio" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAH4MBDtDrsWsbjJzTgYeMTINgou3PxM2uAbofSuU2II5IWkJYHHoAulGPCN6fxC4SYF_p3x-d7GNdDC-Ntdqm_acjEr5xQpXaOEYS4MijnCu7_Cc6vetWV6IrfTpOFrcJKuCpdHDGunCG_FRXbwkGXBFGqntxE-td3LUOaZRxXLcqEZZ-assyLbUSbfFy6JtSaQ2nf800VX5lyIMb7GL7F3Ml-z-2kr7lE5Wk9PxGo_jXFmP2cEapiWBVNR2y8CS03E1uEOr7zPA"/>
+</div>
+<h4 class="text-lg font-headline font-bold text-on-surface">David Kamau</h4>
+<p class="text-sm text-secondary font-medium mb-2">Chief Product Architect</p>
+<p class="text-xs text-on-surface-variant">Ex-Google PM with 12 years experience in scalable systems.</p>
+</div>
+<!-- Team Member 2 -->
+<div class="group">
+<div class="aspect-[3/4] overflow-hidden rounded-xl bg-surface-container-high mb-4">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Professional female executive with a technical background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBirgqgFu-qnB3mcJOLbJGIRPzDvLr4wwBrPAOpuQ-p-4FT2UZ5taq0n4C1ZzqGsLN97RfUJtwXBYeZKxWRoFkrycGrB-KQlWlcZSaziPAtjg4Cs-kQgaVqnuHAiRclrb4sdUz_8V7QcOXdOD3SWUZf3Jf1lahWUa6OI4RuyRVmv2K4vfph6k3BBpqwpQ2HCZR6iTd23HArTRIv_LsJWbFHi8CWJtXYBpEOOIOlZoZ0jT8ReE6WLM6mF67Shp95b1aUxTY1dC1EuQ"/>
+</div>
+<h4 class="text-lg font-headline font-bold text-on-surface">Sarah Njeri</h4>
+<p class="text-sm text-secondary font-medium mb-2">Lead AI Engineer</p>
+<p class="text-xs text-on-surface-variant">Specialist in NLP and custom LLM integrations for local languages.</p>
+</div>
+<!-- Team Member 3 -->
+<div class="group">
+<div class="aspect-[3/4] overflow-hidden rounded-xl bg-surface-container-high mb-4">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Modern tech leader standing in a professional office environment" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDRrH2oxkJbh-UmxIr1PGqVhAO4yci2NA4sLcAK71d-Zy_vc6v2uT7UzHXslyVgRK3SF_Eol5cshbc2LZNaXASivlS6uIkkS8A--wh0hZbVO-fHzyCVIvo-K803H17UjihfD2oYxywIurSH9PWZM32WR3TB7mXQS9aS9AKLhJiSb45AFzFq_0v2laGMVmkpb6ak2_cmEn-lluLjoJyzXQ5P1QVClqg7bAqSyd-yxj26BQlzYGUmmarxw_EgRbDMuAXURvNv3KMGmg"/>
+</div>
+<h4 class="text-lg font-headline font-bold text-on-surface">Mark Otieno</h4>
+<p class="text-sm text-secondary font-medium mb-2">Head of SME Strategy</p>
+<p class="text-xs text-on-surface-variant">Dedicated to tailoring enterprise tech for Kenyan market realities.</p>
+</div>
+<!-- Team Member 4 -->
+<div class="group">
+<div class="aspect-[3/4] overflow-hidden rounded-xl bg-surface-container-high mb-4">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Technical designer focusing on UI/UX in a digital agency" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDxw3ExA-GDMmDgFLW60_iEItdkE-M7Pc3Wd26VuZ8Wj7-SbQEB-l41drMA9S3CIpHMrgnzbyDDp8yux9Z5S0TZCtPKZhs23ic_ottwR7Opz1jw-f7W5sxqSSMz5RIMDdbP3laajka996nOf4Cx57jxfIrcnzpAMSshZqPvFF_HkYFuhmA9jS9Lvu09rD4PoZXxNNfzdX8Cg5VE68xmDA0DyIC1IHO3g6yK_5dRur_ypbRj_lzzIIWIeS1igg20xK1_5YLK_qJdnA"/>
+</div>
+<h4 class="text-lg font-headline font-bold text-on-surface">Grace Wambui</h4>
+<p class="text-sm text-secondary font-medium mb-2">Director of UX/UI</p>
+<p class="text-xs text-on-surface-variant">Expert in creating high-conversion editorial interfaces.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Section 5: CTA -->
+<section class="py-24 max-w-7xl mx-auto px-6">
+<div class="relative overflow-hidden primary-gradient rounded-2xl p-12 lg:p-20 text-center">
+<div class="relative z-10 max-w-2xl mx-auto">
+<h2 class="text-3xl lg:text-5xl font-headline font-extrabold text-on-primary mb-6">Ready to architect your digital future?</h2>
+<p class="text-on-primary-container text-lg mb-10 opacity-90">
+                        Join the ranks of high-performing Kenyan SMEs leveraging Akusama for technical excellence.
+                    </p>
+<div class="flex flex-col sm:flex-row gap-4 justify-center">
+<button class="bg-surface text-primary px-8 py-4 rounded-md font-bold text-lg hover:bg-surface-container-low transition-all">
+                            Start Your Project
+                        </button>
+<button class="border border-on-primary/30 text-on-primary px-8 py-4 rounded-md font-bold text-lg hover:bg-on-primary/10 transition-all">
+                            View Our Process
+                        </button>
+</div>
+</div>
+<!-- Abstract Pattern Overlay -->
+<div class="absolute inset-0 opacity-10 pointer-events-none" style="background-image: radial-gradient(circle at 2px 2px, white 1px, transparent 0); background-size: 32px 32px;"></div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="w-full border-t border-slate-200/15 dark:border-slate-800/15 bg-slate-50 dark:bg-slate-950">
+<div class="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-7xl mx-auto px-8 py-16">
+<div class="col-span-2 md:col-span-1">
+<div class="text-xl font-black text-slate-900 dark:text-slate-100 font-headline mb-4">Akusama</div>
+<p class="text-slate-500 text-sm font-inter antialiased max-w-xs">
+                    Architectural Precision in Web Development for the modern African enterprise.
+                </p>
+</div>
+<div>
+<h5 class="font-bold text-blue-800 dark:text-blue-300 mb-4 text-sm uppercase tracking-wider">Services</h5>
+<ul class="space-y-2 text-sm">
+<li><a class="text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-300 underline-offset-4 hover:underline" href="#">Web Design</a></li>
+<li><a class="text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-300 underline-offset-4 hover:underline" href="#">AI Integration</a></li>
+<li><a class="text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-300 underline-offset-4 hover:underline" href="#">E-commerce</a></li>
+</ul>
+</div>
+<div>
+<h5 class="font-bold text-blue-800 dark:text-blue-300 mb-4 text-sm uppercase tracking-wider">Industries</h5>
+<ul class="space-y-2 text-sm">
+<li><a class="text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-300 underline-offset-4 hover:underline" href="#">Real Estate</a></li>
+<li><a class="text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-300 underline-offset-4 hover:underline" href="#">Agriculture</a></li>
+<li><a class="text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-300 underline-offset-4 hover:underline" href="#">SME Solutions</a></li>
+</ul>
+</div>
+<div>
+<h5 class="font-bold text-blue-800 dark:text-blue-300 mb-4 text-sm uppercase tracking-wider">Company</h5>
+<ul class="space-y-2 text-sm">
+<li><a class="font-bold text-blue-700 dark:text-blue-400 underline-offset-4 hover:underline" href="#">Our Process</a></li>
+<li><a class="text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-300 underline-offset-4 hover:underline" href="/contact">Contact Us</a></li>
+</ul>
+</div>
+</div>
+<div class="max-w-7xl mx-auto px-8 py-8 border-t border-slate-200/10 text-center">
+<p class="text-slate-500 text-xs font-inter antialiased italic">
+                © 2026 Akusama. Architectural Precision in Web Development.
+            </p>
+</div>
+</footer>
+</body></html>
