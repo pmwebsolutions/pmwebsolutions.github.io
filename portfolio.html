@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+
+<html class="scroll-smooth" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Portfolio | Akusama - Empowering Kenyan SMEs</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&amp;family=Inter:wght@400;500;600&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "on-secondary": "#ffffff",
+              "tertiary-container": "#006477",
+              "on-primary-container": "#c4d2ff",
+              "primary-fixed": "#dae2ff",
+              "outline-variant": "#c3c6d6",
+              "on-error-container": "#93000a",
+              "tertiary": "#004b59",
+              "on-tertiary-fixed": "#001f27",
+              "on-tertiary": "#ffffff",
+              "surface-container-high": "#e7e8ea",
+              "on-background": "#191c1e",
+              "surface-container-low": "#f3f4f6",
+              "primary-container": "#0052cc",
+              "error": "#ba1a1a",
+              "on-primary-fixed": "#001848",
+              "on-secondary-container": "#006374",
+              "on-surface-variant": "#434654",
+              "surface-bright": "#f8f9fb",
+              "surface-container-highest": "#e1e2e4",
+              "on-error": "#ffffff",
+              "surface-variant": "#e1e2e4",
+              "background": "#f8f9fb",
+              "tertiary-fixed-dim": "#48d7f9",
+              "secondary-fixed-dim": "#5dd6f3",
+              "outline": "#737685",
+              "inverse-on-surface": "#f0f1f3",
+              "secondary-container": "#6ae1ff",
+              "on-tertiary-fixed-variant": "#004e5d",
+              "on-tertiary-container": "#76e2ff",
+              "on-primary": "#ffffff",
+              "primary": "#003d9b",
+              "surface-dim": "#d9dadc",
+              "inverse-surface": "#2e3132",
+              "secondary": "#00687a",
+              "on-surface": "#191c1e",
+              "secondary-fixed": "#adecff",
+              "surface-tint": "#0c56d0",
+              "surface": "#f8f9fb",
+              "on-secondary-fixed": "#001f26",
+              "error-container": "#ffdad6",
+              "tertiary-fixed": "#afecff",
+              "surface-container": "#edeef0",
+              "primary-fixed-dim": "#b2c5ff",
+              "on-primary-fixed-variant": "#0040a2",
+              "inverse-primary": "#b2c5ff",
+              "on-secondary-fixed-variant": "#004e5d",
+              "surface-container-lowest": "#ffffff"
+            },
+            fontFamily: {
+              "headline": ["Manrope"],
+              "body": ["Inter"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+<style>
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      }
+      .glass-nav {
+        background: rgba(248, 249, 251, 0.8);
+        backdrop-filter: blur(20px);
+      }
+      .text-shadow-subtle {
+        text-shadow: 0px 2px 4px rgba(0, 61, 155, 0.05);
+      }
+    </style>
+</head>
+<body class="bg-surface font-body text-on-surface">
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full z-50 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md shadow-xl shadow-blue-900/5 transition-all">
+<div class="flex justify-between items-center px-8 py-4 max-w-7xl mx-auto">
+<div class="text-xl font-bold tracking-tighter text-slate-900 dark:text-white font-headline">
+                Akusama
+            </div>
+<div class="hidden md:flex items-center gap-8 font-headline font-semibold tracking-tight">
+<a class="text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-300 transition-colors" href="#">Services</a>
+<a class="text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-300 transition-colors" href="#">Industries</a>
+<a class="text-blue-700 dark:text-blue-400 font-bold border-b-2 border-blue-700 dark:border-blue-400 pb-1" href="#">Portfolio</a>
+<a class="text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-300 transition-colors" href="#">About</a>
+</div>
+<button class="bg-primary hover:opacity-80 active:scale-95 transition-all text-on-primary px-6 py-2.5 rounded-lg font-headline font-semibold text-sm">
+                Get a Free Quote
+            </button>
+</div>
+</nav>
+<main class="pt-32 pb-24">
+<!-- Hero Section -->
+<header class="max-w-7xl mx-auto px-8 mb-20">
+<span class="inline-block text-secondary font-label font-semibold tracking-widest uppercase text-xs mb-4">Engineering Excellence</span>
+<h1 class="font-headline font-extrabold text-5xl md:text-6xl text-on-surface tracking-tighter max-w-4xl mb-6">
+                Case Studies: Tangible Impact Through <span class="bg-gradient-to-r from-primary to-primary-container bg-clip-text text-transparent">Digital Architecture.</span>
+</h1>
+<p class="text-on-surface-variant text-xl max-w-2xl leading-relaxed">
+                We bridge the gap between complex AI systems and practical business growth for the Kenyan ecosystem.
+            </p>
+</header>
+<!-- Bento Grid Portfolio -->
+<section class="max-w-7xl mx-auto px-8 grid grid-cols-1 md:grid-cols-12 gap-8">
+<!-- Case Study 1: PWA Dashboard (Large) -->
+<div class="md:col-span-8 bg-surface-container-lowest rounded-xl p-8 shadow-sm group hover:shadow-2xl transition-all duration-500 flex flex-col md:flex-row gap-8 overflow-hidden">
+<div class="flex-1">
+<div class="flex items-center gap-2 mb-6">
+<span class="material-symbols-outlined text-secondary" data-icon="web">web</span>
+<span class="text-on-surface-variant font-label text-sm font-medium">E-commerce / SME</span>
+</div>
+<h3 class="font-headline font-bold text-3xl mb-4 group-hover:text-primary transition-colors">Nairobi SME PWA Dashboard</h3>
+<p class="text-on-surface-variant mb-8 leading-relaxed">Modernizing legacy inventory systems with a high-performance Progressive Web App optimized for low-bandwidth environments.</p>
+<div class="grid grid-cols-2 gap-4 mb-8">
+<div class="p-4 bg-surface-container-low rounded-lg">
+<span class="block font-headline font-extrabold text-2xl text-primary">50%</span>
+<span class="text-xs font-label uppercase text-on-surface-variant tracking-wider">Efficiency Gain</span>
+</div>
+<div class="p-4 bg-surface-container-low rounded-lg">
+<span class="block font-headline font-extrabold text-2xl text-primary">0.8s</span>
+<span class="text-xs font-label uppercase text-on-surface-variant tracking-wider">Load Speed</span>
+</div>
+</div>
+<a class="inline-flex items-center gap-2 text-primary font-headline font-bold hover:underline" href="#">
+                        View Project Details <span class="material-symbols-outlined text-sm" data-icon="arrow_forward">arrow_forward</span>
+</a>
+</div>
+<div class="flex-1 relative min-h-[300px] rounded-lg overflow-hidden bg-surface-container-high">
+<img class="absolute inset-0 w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700" data-alt="Modern minimalist PWA dashboard interface on a mobile device" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDSUQcZ7jnw86VV3pNDagPFY_RTMr-wywNutCskUynpPdt6Hphig612BkHFXjIoX2h2gyVLt9AwgzNeC832hgWI-ONF5Uv2r9USZoNQNv0y464WK784fhxu3iZWGSoIpwYoecRm2uCT5SwScozBmiqHEgf1Qk7G4Eb3FQLW85yrN91JRIRn8C7fbqwHsOpSj75HZjH3T-QjIYQBwKVxy_Bdd4c2_d4ynM5vhO1D7IlIq1kPF37rbZWoP179521U3fsTn81g1ghzEA"/>
+</div>
+</div>
+<!-- Case Study 2: Healthcare (Vertical) -->
+<div class="md:col-span-4 bg-primary text-on-primary rounded-xl p-8 shadow-sm group relative overflow-hidden flex flex-col justify-between">
+<div class="relative z-10">
+<span class="material-symbols-outlined text-primary-fixed mb-6" data-icon="medical_services">medical_services</span>
+<h3 class="font-headline font-bold text-2xl mb-4">Healthcare Data Annotation</h3>
+<p class="text-primary-fixed/80 text-sm mb-6 leading-relaxed">Developing bespoke AI-assisted labeling tools for medical imaging diagnostic training sets.</p>
+</div>
+<div class="relative z-10">
+<div class="border-t border-primary-fixed/20 pt-6">
+<span class="block font-headline font-black text-4xl mb-1">99.4%</span>
+<span class="text-xs font-label uppercase tracking-widest opacity-70">Label Accuracy</span>
+</div>
+</div>
+<div class="absolute -bottom-10 -right-10 w-48 h-48 bg-primary-container opacity-20 rounded-full blur-3xl group-hover:scale-150 transition-transform duration-700"></div>
+</div>
+<!-- Case Study 3: Finance ML (Standard Card) -->
+<div class="md:col-span-6 bg-surface-container-lowest rounded-xl p-8 shadow-sm group hover:bg-secondary-fixed transition-colors duration-300">
+<div class="flex justify-between items-start mb-12">
+<div class="bg-surface-container-low p-3 rounded-lg group-hover:bg-white transition-colors">
+<span class="material-symbols-outlined text-secondary" data-icon="monitoring">monitoring</span>
+</div>
+<span class="font-label text-xs font-bold uppercase tracking-widest py-1 px-3 bg-secondary-container rounded-full text-on-secondary-container">Finance</span>
+</div>
+<h3 class="font-headline font-bold text-2xl mb-4">ML Pipelines for Micro-Lending</h3>
+<p class="text-on-surface-variant group-hover:text-on-surface mb-8">Automated risk assessment pipelines integrating mobile money transaction history for instant credit scoring.</p>
+<div class="flex items-center gap-8">
+<div>
+<span class="block font-headline font-bold text-xl text-primary">12ms</span>
+<span class="text-xs font-label text-on-surface-variant uppercase">Inference Latency</span>
+</div>
+<div>
+<span class="block font-headline font-bold text-xl text-primary">3.2x</span>
+<span class="text-xs font-label text-on-surface-variant uppercase">Loan Processing</span>
+</div>
+</div>
+</div>
+<!-- Case Study 4: Manufacturing AI (Standard Card) -->
+<div class="md:col-span-6 bg-surface-container-lowest rounded-xl p-8 shadow-sm group border border-transparent hover:border-outline-variant transition-all">
+<div class="flex justify-between items-start mb-12">
+<div class="bg-surface-container-low p-3 rounded-lg">
+<span class="material-symbols-outlined text-secondary" data-icon="factory">factory</span>
+</div>
+<span class="font-label text-xs font-bold uppercase tracking-widest py-1 px-3 bg-primary-fixed text-on-primary-fixed rounded-full">Manufacturing</span>
+</div>
+<h3 class="font-headline font-bold text-2xl mb-4">Predictive Maintenance System</h3>
+<p class="text-on-surface-variant mb-8">IoT-enabled sensor arrays integrated with computer vision for real-time defect detection on assembly lines.</p>
+<div class="flex items-center gap-8">
+<div>
+<span class="block font-headline font-bold text-xl text-primary">22%</span>
+<span class="text-xs font-label text-on-surface-variant uppercase">Downtime Reduction</span>
+</div>
+<div>
+<span class="block font-headline font-bold text-xl text-primary">15k+</span>
+<span class="text-xs font-label text-on-surface-variant uppercase">Units Monitored</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Tech Stack / Logo Cloud (Subtle) -->
+<section class="mt-32 max-w-7xl mx-auto px-8 py-16 bg-surface-container-low rounded-3xl overflow-hidden">
+<div class="text-center mb-12">
+<span class="font-label text-xs font-bold uppercase tracking-[0.2em] text-on-surface-variant">Built with Industrial-Grade Stack</span>
+</div>
+<div class="flex flex-wrap justify-center items-center gap-12 md:gap-20 opacity-40 grayscale hover:grayscale-0 transition-all duration-500">
+<img class="h-8" data-alt="Python programming language logo" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDVosk-GWo7jRfaiSA29QQjE3ERIJel29Wr93OvcEJiHTSQFK8qLL0E5tcDV5r50gWEdPwjTMs1Z5njSlcDb_lk7QQtd5VyFiKPMCzwExx8Sd2Wt4QypUGITAiJXJOl5v3AIinb9MdL7Hia8YwYhrvX3zZC5QuUmbDk7qeIqWJcvzyxhkOyjzV7Hxg8SC-HBrY2GZgGxWN12Doc7MREwwxufTGjZzX3CY1CPzXyJ1xoYojtEJm9qoJn-Eg3Aa0waP-x6e8liddcLQ"/>
+<img class="h-8" data-alt="TensorFlow AI framework logo" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA5fgfPD1RiHhu4p8xhGR-nJ2UDwBZ8BRgYgF-qV3kH2UxVEMBXBgUqC_of1HEB08fM3CdOScwKOYo1NAmcVZB2iA2MB8aaJNXvm88NQLQBAOUkB6jDVzMHtqEJN7SviIkIgoD0tvwMq-6dI0Q03BkSOKQAbRoyKuVBChAPi7wo8fdkeldYTmq51x87_qJB9FTDVfqFJbjuS9gOiCkEikFn2BO8ZScuw70mGumqu8Z8_SuyMy0DlteTh4a-1145kaPtaE2pV0uM3Q"/>
+<img class="h-8" data-alt="React JS frontend library logo" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCi6lif206NYfNJ-164rjs8PpcEgQ5bJreBbgXYiwULeDrNoqNvHJORhrTvl2uLZEInuRLjJN57hmGowt4IxInhtrYRykvKdSqpzbHvIWuLeiUnxocDznpQJ2-kN31NDdFmlgTefbd9PlEib2Lm0bw__zfl782FU3KQt198j6UOqizLFhJNotS4eyZza6H751G_8cVclBvyWPuwN9E8e-eJwU9wl54_rX0UmEROcIba7sPkYwWpe1v7cGQYdXM4D-IH_G2uAFwQrA"/>
+<img class="h-8" data-alt="AWS cloud computing services logo" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBi-LCYuEojDP15J_kidrFLIQJq1kJXCLNMn4937nJ3uqrZBPvcRmAqq7nUZ1U87scgTGU3Ev9mVu8WIFftYY-PdpUHNkqH4_8iqPB-q7sY-LwxzKjLL6PZy7LY4aoAH9XA-z9pvOkVNo25S6CgDdk4VkfpznGTHjgkYNOYmtds_EDXgRZmH4LcP1iEf5PffINXsDX04bbe8AmMDVwtuHaD3iIrSwh5WTGeDyNZ2BMok0jQnJqqHpxPSQZM76U9ehnYNRO_xsiqlQ"/>
+<img class="h-8" data-alt="Docker containerization platform logo" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDO3kt4irYzJMkV0bKIjU3ge6Xh_QPiZTJD_IYmCddejIsCRL0rCd87s0cums0Hr0CuCN0oMf6K5KJHZktAeSiE6AxBrVMqyhW6zaVafbRqwM3H2IEw9WFg0NWUyGLfnVzZJDavLsRn5WF3ItR8_PEO2soD0dWdvC8IKVE_HtkkeIwbr1Ht-FYTSRca6IdWSvXz6k-vi3YjVGiIr5MIiVN0kh7PLRc5jSnmZNEHpGkKgaBqh4RdXBmPN59ZbmDKNkKHvct1tFXOvA"/>
+<img class="h-8" data-alt="Kubernetes orchestration logo" src="https://lh3.googleusercontent.com/aida-public/AB6AXuADGERcfbzItg0XNJiqnIlkGh3q3jL3TCUIckzkY06CE4XEehKmbQMtdMH4zovP2SX17qfhwWKiAJievSvGLcQ4YkiiuuxHvCyGn0Bul8F3K2TvwPL0DXh5JjL7kCbzvi834jhkJOKfguB9NswnUCdTT9lr5K5JELvQTbJ87w2TNSxlSYcPLV68MXkKVBDgkD08MmgxJXbHzN78AyavbSurAY5ZuNqu0PwQdMvCKq7ZrYLRf3s9Gx-PX4pLiHWUrYyW9dpriDbpZw"/>
+</div>
+</section>
+<!-- Contact CTA (Asymmetric) -->
+<section class="mt-32 max-w-7xl mx-auto px-8 flex flex-col md:flex-row items-center gap-16">
+<div class="flex-1">
+<h2 class="font-headline font-extrabold text-4xl mb-6">Ready to architect your <span class="text-primary">next success?</span></h2>
+<p class="text-on-surface-variant text-lg mb-8 leading-relaxed">Let's discuss how our technical expertise can be applied to your specific business challenges.</p>
+<div class="flex gap-4">
+<button class="bg-primary text-on-primary px-8 py-4 rounded-lg font-headline font-bold shadow-lg shadow-primary/20 hover:scale-105 transition-transform">Start a Consultation</button>
+<button class="bg-surface-container-highest text-on-surface px-8 py-4 rounded-lg font-headline font-bold hover:bg-surface-container-high transition-colors">View All Services</button>
+</div>
+</div>
+<div class="flex-1 w-full aspect-square bg-surface-container-low rounded-3xl relative overflow-hidden">
+<img class="absolute inset-0 w-full h-full object-cover" data-alt="Sophisticated abstract blue architectural lines representing digital growth" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBknVzIhwp-aki98Iqza8qZqW_NXoaCON0eGdyunH06cwb8clfo4j8ZpGywyFnGrjHvHdEXprm1U9L5PYzsA2sNNwHMcgcF6ZqVNXOP55AGMQuB05rDVZUSF3YuO0uSCIzwwd4Njd7S_4Wneo6Jb_YFPrHl63zLiBiEJ69ooCB0DlpiIe9hjz4LOeCubY9RG0SgnrdL8BYk_2ybCsOFgl65nZabGrblRa8cz-QZDCyzFpe4ZTsvFb5Rbrd1VCGwCeK4xSFkLbKY6g"/>
+<div class="absolute inset-0 bg-gradient-to-t from-primary/20 to-transparent"></div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="w-full border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 font-body text-sm leading-relaxed">
+<div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8 px-8 py-16 max-w-7xl mx-auto">
+<div class="col-span-2 lg:col-span-1">
+<span class="text-lg font-black text-slate-900 dark:text-white mb-4 block font-headline">Akusama</span>
+<p class="text-slate-500 dark:text-slate-400 max-w-xs mb-6">
+                    © 2024 Akusama. Empowering Kenyan SMEs through AI &amp; Web Excellence.
+                </p>
+</div>
+<div>
+<h4 class="font-headline font-bold text-slate-900 dark:text-white mb-4">Expertise</h4>
+<ul class="space-y-3">
+<li><a class="text-slate-500 dark:text-slate-400 hover:text-blue-500 hover:translate-x-1 transition-all duration-200 inline-block" href="#">Web Development</a></li>
+<li><a class="text-slate-500 dark:text-slate-400 hover:text-blue-500 hover:translate-x-1 transition-all duration-200 inline-block" href="#">AI Integration</a></li>
+<li><a class="text-slate-500 dark:text-slate-400 hover:text-blue-500 hover:translate-x-1 transition-all duration-200 inline-block" href="#">E-commerce Solutions</a></li>
+<li><a class="text-slate-500 dark:text-slate-400 hover:text-blue-500 hover:translate-x-1 transition-all duration-200 inline-block" href="#">Cloud Services</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-headline font-bold text-slate-900 dark:text-white mb-4">Industries</h4>
+<ul class="space-y-3">
+<li><a class="text-slate-500 dark:text-slate-400 hover:text-blue-500 hover:translate-x-1 transition-all duration-200 inline-block" href="#">Real Estate Tech</a></li>
+<li><a class="text-slate-500 dark:text-slate-400 hover:text-blue-500 hover:translate-x-1 transition-all duration-200 inline-block" href="#">Healthcare Solutions</a></li>
+<li><a class="text-slate-500 dark:text-slate-400 hover:text-blue-500 hover:translate-x-1 transition-all duration-200 inline-block" href="#">Manufacturing AI</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-headline font-bold text-slate-900 dark:text-white mb-4">Company</h4>
+<ul class="space-y-3">
+<li><a class="text-slate-500 dark:text-slate-400 hover:text-blue-500 hover:translate-x-1 transition-all duration-200 inline-block" href="#">Our Process</a></li>
+<li><a class="text-slate-500 dark:text-slate-400 hover:text-blue-500 hover:translate-x-1 transition-all duration-200 inline-block" href="#">Success Stories</a></li>
+<li><a class="text-slate-500 dark:text-slate-400 hover:text-blue-500 hover:translate-x-1 transition-all duration-200 inline-block" href="#">Contact Us</a></li>
+</ul>
+</div>
+</div>
+</footer>
+</body></html>
